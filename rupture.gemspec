@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "lib/rupture/seq.rb"
+    "lib/rupture/seq.rb",
+    "rupture.gemspec"
   ]
   s.homepage = %q{http://github.com/flatland/rupture}
   s.require_paths = ["lib"]
