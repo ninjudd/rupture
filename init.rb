@@ -1,1 +1,2 @@
-Enumerable.include Rupture::Seq
+Object.send(:include, Rupture::Meta)
+Enumerable.send(:include, Rupture::Seq)
