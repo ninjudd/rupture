@@ -1,23 +1,38 @@
-if defined?(ActiveSupport::CoreExtensions::Hash::Keys)
-  ActiveSupport::CoreExtensions::Hash::Keys.send(:define_method, :symbolize_keys!) do
+class Hash
+  def symbolize_keys!
     keys.each do |key|
       self[(key.to_sym rescue key) || key] = delete(key)
     end
     self
   end
 
-  ActiveSupport::CoreExtensions::Hash::Keys.send(:define_method, :symbolize_keys) do
+  def symbolize_keys
     dup.symbolize_keys!
   end
 
-  ActiveSupport::CoreExtensions::Hash::Keys.send(:define_method, :stringify_keys) do
+  def deep_symbolize_keys!
+    values.each do |val|
+      val.deep_symbolize_keys! if val.is_a?(Hash)
+    end
+    symbolize_keys!
+  end
+
+  def deep_symbolize_keys
+    copy = symbolize_keys
+    copy.each do |key, val|
+      copy[key] = val.deep_symbolize_keys if val.is_a?(Hash)
+    end
+    copy
+  end
+
+  def stringify_keys!
     keys.each do |key|
       self[key.to_s] = delete(key)
     end
     self
   end
 
-  ActiveSupport::CoreExtensions::Hash::Keys.send(:define_method, :stringify_keys) do
+  def stringify_keys
     dup.stringify_keys!
   end
 end
