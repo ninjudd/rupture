@@ -5,7 +5,7 @@ require 'mocha'
 require 'pp'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
-require 'model_set'
+require 'rupture'
 
 class Test::Unit::TestCase
 end

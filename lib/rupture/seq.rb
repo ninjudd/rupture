@@ -1,4 +1,4 @@
-module Rupture::Seq
+module Enumerable
   def split_at(n)
     [take(n), drop(n)]
   end

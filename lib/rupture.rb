@@ -4,4 +4,3 @@ require 'rupture/meta'
 require 'rupture/seq'
 
 Object.send(:include, Rupture::Meta)
-Enumerable.send(:include, Rupture::Seq)
