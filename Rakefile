@@ -1,6 +1,5 @@
 require 'rake'
 require 'rake/testtask'
-require 'rdoc/task'
 
 begin
   require 'jeweler'
@@ -21,14 +20,6 @@ Rake::TestTask.new do |t|
   t.libs << 'lib'
   t.pattern = 'test/**/*_test.rb'
   t.verbose = false
-end
-
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'model_set'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
 begin
