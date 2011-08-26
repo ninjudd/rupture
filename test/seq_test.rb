@@ -8,4 +8,8 @@ class SeqTest < Test::Unit::TestCase
   should "partition_by predicate" do
     assert_equal [[1, 3], [2, 4], [3], [4, 8]], [1,3,2,4,3,4,8].partition_by {|i| i.odd?}
   end
+
+  should "partition_on predicate" do
+    assert_equal [[1], [nil, 4, 3], [nil, 8]], [1,nil,4,3,nil,8].partition_on {|i| i == nil}
+  end
 end

@@ -14,4 +14,13 @@ module Enumerable
     end
     results
   end
+
+  def partition_on(&block)
+    results  = []
+    each do |i|
+      results << [] if yield(i) or results.empty?
+      results.last << i
+    end
+    results
+  end
 end
