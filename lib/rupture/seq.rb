@@ -1,9 +1,11 @@
 module Enumerable
-  def split_at(n)
-    [take(n), drop(n)]
-  end
+  alias filter   select
+  alias remove   reject
+  alias separate partition
 
-  def partition(n, step = n, pad = nil)
+  def partition(n = nil, step = n, pad = nil, &block)
+    return separate(&block) if n.nil?
+
     results = []
     coll = self
 
@@ -44,5 +46,13 @@ module Enumerable
       results.last << b
     end
     results
+  end
+
+  def split_at(n)
+    [take(n), drop(n)]
+  end
+
+  def split_with(&block)
+    [take_while(&block), drop_while(&block)]
   end
 end
