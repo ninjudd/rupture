@@ -1,5 +1,6 @@
 require 'rake'
 require 'rake/testtask'
+require 'rubygems'
 
 begin
   require 'jeweler'
@@ -13,7 +14,7 @@ begin
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler not available. Install it with: sudo gem install jeweler"
 end
 
 Rake::TestTask.new do |t|
