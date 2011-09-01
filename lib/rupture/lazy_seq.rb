@@ -1,10 +1,15 @@
-class Rupture::LazySeq < Rupture::Seq
-  def initialize(&block)
-    @block = block
-    super()
-  end
+module Rupture
+  class LazySeq < Seq
+    def initialize(&block)
+      @block = block
+      super()
+    end
 
-  def seq
-    @seq ||= @block.call
+    def seq
+      return @seq unless @block
+      @seq   = @block.call.seq
+      @block = nil
+      @seq
+    end
   end
 end

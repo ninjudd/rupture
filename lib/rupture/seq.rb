@@ -1,17 +1,49 @@
-class Rupture::Seq < Enumerable::Enumerator
-  include Seqable
+module Rupture
+  class Seq < Enumerable::Enumerator
+    include Seqable
 
-private
+    def initialize
+      super(self)
+    end
 
-  def initialize
-    super(self, :_each)
+    def each
+      s = self
+      while s = s.seq
+        yield s.first
+        s = s.rest
+      end
+    end
+
+    def [](index)
+      nth(index)
+    end
+
+    def conj(item)
+      Cons.new(item, self)
+    end
+
+    def self.empty
+      @empty ||= EmptySeq.new
+    end
   end
 
-  def _each(&block)
-    s = self
-    while s = s.seq
-      block.call(s.first)
-      s = s.rest
+  class EmptySeq < Seq
+    def seq
+      nil
     end
+  end
+end
+
+class NilClass
+  def seq
+    nil
+  end
+
+  def first
+    nil
+  end
+
+  def rest
+    Rupture::Seq.empty
   end
 end

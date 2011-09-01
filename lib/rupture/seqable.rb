@@ -1,67 +1,103 @@
-module Rupture::Seqable
-  def next
-    s = rest
-    s if s and not s.empty?
-  end
-
-  def split_at(n)
-    [take(n), drop(n)]
-  end
-
-  def split_with(&block)
-    [take_while(&block), drop_while(&block)]
-  end
-
-  alias filter   select
-  alias remove   reject
-  alias separate partition
-
-  def partition(n = nil, step = n, pad = nil, &block)
-    return separate(&block) if n.nil?
-
-    results = []
-    coll = self
-
-    while coll.size >= n
-      results << coll.take(n)
-      coll = coll.drop(step)
+module Rupture
+  module Seqable
+    def first
+      seq.first
     end
 
-    if pad and coll.any?
-      results << coll + pad.take(n - coll.size)
+    def rest
+      seq.rest
     end
-    results
-  end
 
-  def partition_all(n, step = n)
-    partition(n, step, [])
-  end
-
-  def partition_all(n, step = n)
-    partition(n, step, [])
-  end
-
-  def partition_by
-    results  = []
-    previous = nil
-
-    each do |i|
-      current = yield(i)
-      results << [] if current != previous or results.empty?
-      results.last << i
-      previous = current
+    def next
+      rest.seq
     end
-    results
-  end
 
-  def partition_between
-    return [] if empty?
-    results = [[first]]
-
-    partition(2, 1).each do |(a,b)|
-      results << [] if yield(a,b)
-      results.last << b
+    def inspect
+      "(#{to_a.join(' ')})"
     end
-    results
+
+    def take(n)
+      LazySeq.new do
+        if n.pos? and s = seq
+          Cons.new(s.first, s.rest.take(n.dec))
+        end
+      end
+    end
+
+    def drop(n)
+      LazySeq.new do
+        s = seq
+        while s and n.pos?
+          n = n.dec
+          s = s.next
+        end
+        s
+      end
+    end
+
+    def nth(n)
+      drop(n.dec).first
+    end
+
+    def split_at(n)
+      [take(n), drop(n)]
+    end
+
+    def split_with(&block)
+      [take_while(&block), drop_while(&block)]
+    end
+
+    # alias filter   select
+    # alias remove   reject
+    # alias separate partition
+
+    # def partition(n = nil, step = n, pad = nil, &block)
+    #   return separate(&block) if n.nil?
+
+    #   results = []
+    #   coll = self
+
+    #   while coll.size >= n
+    #     results << coll.take(n)
+    #     coll = coll.drop(step)
+    #   end
+
+    #   if pad and coll.any?
+    #     results << coll + pad.take(n - coll.size)
+    #   end
+    #   results
+    # end
+
+    # def partition_all(n, step = n)
+    #   partition(n, step, [])
+    # end
+
+    # def partition_all(n, step = n)
+    #   partition(n, step, [])
+    # end
+
+    # def partition_by
+    #   results  = []
+    #   previous = nil
+
+    #   each do |i|
+    #     current = yield(i)
+    #     results << [] if current != previous or results.empty?
+    #     results.last << i
+    #     previous = current
+    #   end
+    #   results
+    # end
+
+    # def partition_between
+    #   return [] if empty?
+    #   results = [[first]]
+
+    #   partition(2, 1).each do |(a,b)|
+    #     results << [] if yield(a,b)
+    #     results.last << b
+    #   end
+    #   results
+    # end
   end
 end
