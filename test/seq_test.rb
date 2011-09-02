@@ -99,6 +99,14 @@ class SeqTest < Test::Unit::TestCase
     assert_not_equal b, c
   end
 
+  should "filter" do
+    assert_equal [2,4,6].seq, [1,2,3,4,5,6].filter(&:even?)
+  end
+
+  should "remove" do
+    assert_equal [1,3,5].seq, [1,2,3,4,5,6].remove(&:even?)
+  end
+
   # should "partition" do
   #   assert_equal [[1,2],[3,4]],       [1,2,3,4,5].partition(2)
   #   assert_equal [[1,2],[2,3],[3,4]], [1,2,3,4].partition(2,1)

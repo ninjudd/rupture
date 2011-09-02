@@ -41,13 +41,14 @@ module Rupture
 
     def take_while(&block)
       LazySeq.new do
-        s = seq
-        i = s.first
-        Cons.new(i, s.rest.take_while(&block)) if yield(i)
+        if s = seq
+          i = s.first
+          Cons.new(i, s.rest.take_while(&block)) if yield(i)
+        end
       end
     end
 
-    def drop_while(&block)
+    def drop_while
       LazySeq.new do
         s = seq
         while s and yield(s.first)
@@ -73,6 +74,20 @@ module Rupture
 
     def split_with(&block)
       [take_while(&block), drop_while(&block)]
+    end
+
+    def filter(&block)
+      LazySeq.new do
+        if s = seq
+          i = s.first
+          tail = s.rest.filter(&block)
+          yield(i) ? Cons.new(i, tail) : tail
+        end
+      end
+    end
+
+    def remove(&block)
+      filter(&block.complement)
     end
 
     # alias filter   select
