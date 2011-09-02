@@ -41,6 +41,21 @@ class SeqTest < Test::Unit::TestCase
     end
   end
 
+  should "map" do
+    assert_equal [9,12,15].seq, Seq.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
+    assert_equal [9,12,15].seq, [0,0,0].map_([1,2,3],[3,4,5],[5,6,7]) {|a,b,c,d| a + b + c + d}
+  end
+
+  should "concat" do
+    assert_equal [1,2,3,4,5,6].seq, Seq.concat([1,2],[3,4,5],[6])
+    assert_equal [1,2,3,4,5,6].seq, [1,2].concat([3,4,5],[6])
+  end
+
+  should "mapcat" do
+    assert_equal [1,3,5,2,4,6,3,5,7].seq, Seq.mapcat([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| [a,b,c]}
+    assert_equal [1,3,5,7,2,4,6,8].seq,   [1,2].mapcat([3,4],[5,6],[7,8]) {|a,b,c,d| [a,b,c,d]}
+  end
+
   should "take" do
     nums = [1,2,3,4,5,6,7,8,9,10]
 

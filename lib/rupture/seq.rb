@@ -43,6 +43,19 @@ module Rupture
         end
       end
     end
+
+    def self.concat(*colls)
+      LazySeq.new do
+        colls = colls.drop_while(&:empty?)
+        if s = colls.first
+          Cons.new(s.first, concat(s.rest, *colls.rest))
+        end
+      end
+    end
+
+    def self.mapcat(*colls, &block)
+      concat(*map(*colls, &block))
+    end
   end
 
   class EmptySeq < Seq

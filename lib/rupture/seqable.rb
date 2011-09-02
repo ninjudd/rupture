@@ -12,8 +12,12 @@ module Rupture
       rest.seq
     end
 
+    def empty?
+      not seq
+    end
+
     def inspect
-      "(#{to_a.join(' ')})"
+      "(#{to_a.collect(&:inspect).join(' ')})"
     end
 
     def cons(item)
@@ -58,11 +62,34 @@ module Rupture
       end
     end
 
+    # TODO: Rename once flatten exists
+    def map_(*colls, &block)
+      Seq.map(self, *colls, &block)
+    end
+
+    def concat(*colls, &block)
+      Seq.concat(self, *colls, &block)
+    end
+
+    def mapcat(*colls, &block)
+      Seq.mapcat(self, *colls, &block)
+    end
+
+    def tree_seq(branch, children, root)
+      walk = lambda do |node|
+        LazySeq.new do
+          rest = children[node].mapcat(&walk) if branch[node]
+          Cons.new(node, rest)
+        end
+      end
+      walk[root]
+    end
+
     def every?(&block)
       block ||= Fn.identity
       s = seq
       while s
-        return false unless block.call(s.first)
+        return false unless block[s.first]
         s = s.next
       end
       true
@@ -72,7 +99,7 @@ module Rupture
       block ||= Fn.identity
       s = seq
       while s
-        val = block.call(s.first)
+        val = block[s.first]
         return val if val
         s = s.next
       end
@@ -104,8 +131,6 @@ module Rupture
       filter(&block.complement)
     end
 
-    # alias filter   select
-    # alias remove   reject
     # alias separate partition
 
     # def partition(n = nil, step = n, pad = nil, &block)
