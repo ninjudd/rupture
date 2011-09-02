@@ -5,7 +5,7 @@ module Rupture::Fn
 
   def self.juxt(*fs)
     lambda do |*args|
-      fs.collect {|f| f.call(*args)}
+      fs.collect {|f| f[*args]}
     end
   end
 
@@ -26,14 +26,14 @@ class Object
   def fn(name)
     block = instance_method(name)
     lambda do |object, *args|
-      block.bind(object).call(*args)
+      block.bind(object)[*args]
     end
   end
 
   def fnc(name)
     block = method(name)
     lambda do |object, *args|
-      block.bind(object).call(*args)
+      block.bind(object)[*args]
     end
   end
 end
