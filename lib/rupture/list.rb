@@ -4,7 +4,7 @@ module Rupture
       alias create new
     end
     private_class_method :create
-    attr_reader :seq # , :size
+    attr_reader :seq, :size
 
     def self.empty
       @empty ||= create(nil, 0)

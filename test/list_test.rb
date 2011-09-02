@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class ListTest < Test::Unit::TestCase
-  should "constructors" do
+  should "act like a seq" do
     list = List.new(1, 2, 3, 4)
     assert_equal list.count,                4
     assert_equal list.first,                1
@@ -9,9 +9,11 @@ class ListTest < Test::Unit::TestCase
     assert_nil   list.next.next.next.next
   end
 
-  should "count be fast" do
+  should "count quickly" do
     list = List.new(1, 2, 3, 4)
-    list.expects(:each).never
+    def list.each
+      raise "Tried to compute count by doing O(N) walk"
+    end
 
     assert_equal list.count, 4
   end
