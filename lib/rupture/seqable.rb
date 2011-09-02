@@ -62,7 +62,6 @@ module Rupture
       end
     end
 
-    # TODO: Rename once flatten exists
     def map(*colls, &block)
       Seq.map(self, *colls, &block)
     end
@@ -72,7 +71,8 @@ module Rupture
     end
 
     def flatten
-      tree_seq(~:sequential?, ~:seq).remove(&~:sequential?)
+      sequential = lambda {|x| x.class <= Seq or x.class == Array}
+      tree_seq(sequential, ~:seq).remove(&sequential)
     end
 
     def concat(*colls, &block)
