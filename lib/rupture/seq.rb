@@ -1,6 +1,7 @@
 module Rupture
   class Seq < Enumerable::Enumerator
     include Seqable
+    alias conj cons
 
     def initialize
       super(self)
@@ -21,10 +22,6 @@ module Rupture
     def ==(other)
       # TODO: make efficient
       to_a == other.to_a
-    end
-
-    def conj(item)
-      Cons.new(item, self)
     end
 
     def self.empty

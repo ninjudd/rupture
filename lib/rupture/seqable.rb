@@ -16,6 +16,10 @@ module Rupture
       "(#{to_a.join(' ')})"
     end
 
+    def cons(item)
+      Cons.new(item, self)
+    end
+
     def take(n)
       LazySeq.new do
         if n.pos? and s = seq
