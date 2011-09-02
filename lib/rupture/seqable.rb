@@ -57,6 +57,12 @@ module Rupture
       end
     end
 
+    def every?(&block)
+      return true unless s = seq
+      block ||= Fn.identity
+      block.call(s.first) and s.rest.every?(&block)
+    end
+
     def nth(n)
       drop(n.dec).first
     end

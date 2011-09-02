@@ -20,12 +20,28 @@ module Rupture
     end
 
     def ==(other)
-      # TODO: make efficient
-      to_a == other.to_a
+      s = self.seq
+      o = other.seq
+      while s && o
+        return false if s.first != o.first
+        s = s.next
+        o = o.next
+      end
+      s.nil? and o.nil?
     end
 
     def self.empty
       @empty ||= EmptySeq.new
+    end
+
+    def self.map(*colls, &block)
+      LazySeq.new do
+        if colls.every?(&:seq)
+          firsts = colls.collect(&:first)
+          rests = colls.collect(&:rest)
+          Cons.new(yield(*firsts), self.map(*rests, &block))
+        end
+      end
     end
   end
 

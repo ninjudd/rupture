@@ -51,6 +51,13 @@ class SeqTest < Test::Unit::TestCase
     assert_equal nums.seq, nums.take(10)
   end
 
+  should "every" do
+    nums = [1,2,3,4,5,6,7,8,9,10]
+
+    assert_equal nums.seq, numbers(1).take(10)
+    assert_equal nums.seq, nums.take(10)
+  end
+
   should "drop" do
     nums = [101,102,103,104,105,106,107,108,109,110]
 
@@ -80,6 +87,16 @@ class SeqTest < Test::Unit::TestCase
 
   should "split_with" do
     assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].split_with {|i| i < 4}
+  end
+
+  should "==" do
+    a = Cons.new(1, Cons.new(2, nil))
+    b = Cons.new(1, nil)
+    c = List.new(1, 2)
+
+    assert_equal     a, c
+    assert_not_equal a, b
+    assert_not_equal b, c
   end
 
   # should "partition" do
