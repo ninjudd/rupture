@@ -38,8 +38,8 @@ module Rupture
       LazySeq.new do
         if colls.every?(&:seq)
           firsts = colls.collect(&:first)
-          rests = colls.collect(&:rest)
-          Cons.new(yield(*firsts), self.map(*rests, &block))
+          rests  = colls.collect(&:rest)
+          Cons.new(yield(*firsts), map(*rests, &block))
         end
       end
     end
