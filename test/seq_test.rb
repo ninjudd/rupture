@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class Array
-  include Rupture::Seqable
-end
+Rupture.inject
 
 class SeqTest < Test::Unit::TestCase
   empty_seqs = [nil, [], Seq.empty, LazySeq.new, LazySeq.new{nil}, LazySeq.new{[]}]

@@ -1,4 +1,10 @@
-module Rupture; end
+module Rupture
+  def self.inject
+    [Array, NilClass].each do |klass|
+      klass.send(:include, Rupture::Seqable)
+    end
+  end
+end
 
 require 'rupture/core_ext'
 require 'rupture/meta'
@@ -10,10 +16,10 @@ require 'rupture/cons'
 require 'rupture/array_seq'
 require 'rupture/list'
 
+Fn       = Rupture::Fn
 Seq      = Rupture::Seq
 Cons     = Rupture::Cons
 LazySeq  = Rupture::LazySeq
 List     = Rupture::List
-Fn       = Rupture::Fn
 
 Object.send(:include, Rupture::Meta)
