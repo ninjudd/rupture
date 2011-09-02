@@ -2,6 +2,7 @@ module Rupture
 end
 
 require 'rupture/core_ext'
+require 'rupture/symbol'
 require 'rupture/meta'
 require 'rupture/fn'
 require 'rupture/seqable'

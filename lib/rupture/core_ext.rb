@@ -20,6 +20,25 @@ class Numeric
   end
 end
 
+class Symbol
+  def name
+    parse_namespace unless @name
+    @name
+  end
+
+  def namespace
+    parse_namespace unless @name
+    @namespace
+  end
+
+private
+
+  def parse_namespace
+    @name, *ns = to_s.split('/').reverse
+    @namespace = ns.join('/')
+  end
+end
+
 class Hash
   def symbolize_keys!
     keys.each do |key|
