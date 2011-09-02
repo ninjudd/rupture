@@ -181,15 +181,5 @@ module Rupture
     #   end
     #   results
     # end
-
-    # Remove methods in klass (except first and rest) so they don't shadow Seqable.
-    def self.included(klass)
-      instance_methods.each do |method|
-        next if ["first", "rest"].include?(method)
-        klass.class_eval do
-          remove_method method rescue nil
-        end
-      end
-    end
   end
 end

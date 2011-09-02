@@ -1,9 +1,4 @@
 module Rupture
-  def self.inject
-    [Array, NilClass].each do |klass|
-      klass.send(:include, Rupture::Seqable)
-    end
-  end
 end
 
 require 'rupture/core_ext'
