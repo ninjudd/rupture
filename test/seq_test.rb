@@ -51,11 +51,18 @@ class SeqTest < Test::Unit::TestCase
     assert_equal nums.seq, nums.take(10)
   end
 
-  should "every" do
-    nums = [1,2,3,4,5,6,7,8,9,10]
+  should "every?" do
+    assert_equal true,  [2,4,6,8,10].every?(&:even?)
+    assert_equal false, [2,4,6,8,11].every?(&:even?)
+    assert_equal true,  [2,4,8].every?
+    assert_equal false, [2,nil,4,8].every?
+  end
 
-    assert_equal nums.seq, numbers(1).take(10)
-    assert_equal nums.seq, nums.take(10)
+  should "some" do
+    assert_equal true, [2,4,6,8,11].some(&:even?)
+    assert_equal nil,  [2,4,6,8,10].some(&:odd?)
+    assert_equal 2,    [2,4,8].some
+    assert_equal nil,  [false,false,nil].some
   end
 
   should "drop" do

@@ -59,9 +59,23 @@ module Rupture
     end
 
     def every?(&block)
-      return true unless s = seq
       block ||= Fn.identity
-      block.call(s.first) and s.rest.every?(&block)
+      s = seq
+      while s
+        return false unless block.call(s.first)
+        s = s.next
+      end
+      true
+    end
+
+    def some(&block)
+      block ||= Fn.identity
+      s = seq
+      while s
+        val = block.call(s.first)
+        return val if val
+        s = s.next
+      end
     end
 
     def nth(n)
