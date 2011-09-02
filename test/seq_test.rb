@@ -10,8 +10,8 @@ class SeqTest < Test::Unit::TestCase
   should "empty seqs" do
     empty_seqs.each do |s|
       assert_nil s.seq
-      assert_nil s.first
-      assert     s.rest
+      assert_nil s.seq.first
+      assert     s.seq.rest
     end
   end
 
@@ -41,70 +41,70 @@ class SeqTest < Test::Unit::TestCase
 
   should "map" do
     assert_equal [9,12,15].seq, Seq.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
-    assert_equal [9,12,15].seq, [0,0,0].map_([1,2,3],[3,4,5],[5,6,7]) {|a,b,c,d| a + b + c + d}
+    assert_equal [9,12,15].seq, [0,0,0].seq.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c,d| a + b + c + d}
   end
 
   should "concat" do
     assert_equal [1,2,3,4,5,6].seq, Seq.concat([1,2],[3,4,5],[6])
-    assert_equal [1,2,3,4,5,6].seq, [1,2].concat([3,4,5],[6])
+    assert_equal [1,2,3,4,5,6].seq, [1,2].seq.concat([3,4,5],[6])
   end
 
   should "mapcat" do
     assert_equal [1,3,5,2,4,6,3,5,7].seq, Seq.mapcat([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| [a,b,c]}
-    assert_equal [1,3,5,7,2,4,6,8].seq,   [1,2].mapcat([3,4],[5,6],[7,8]) {|a,b,c,d| [a,b,c,d]}
+    assert_equal [1,3,5,7,2,4,6,8].seq,   [1,2].seq.mapcat([3,4],[5,6],[7,8]) {|a,b,c,d| [a,b,c,d]}
   end
 
   should "take" do
-    nums = [1,2,3,4,5,6,7,8,9,10]
+    nums = [1,2,3,4,5,6,7,8,9,10].seq
 
-    assert_equal nums.seq, numbers(1).take(10)
+    assert_equal nums,     numbers(1).take(10)
     assert_equal LazySeq,  nums.take(10).class
-    assert_equal nums.seq, nums.take(10)
+    assert_equal nums,     nums.take(10)
   end
 
   should "every?" do
-    assert_equal true,  [2,4,6,8,10].every?(&:even?)
-    assert_equal false, [2,4,6,8,11].every?(&:even?)
-    assert_equal true,  [2,4,8].every?
-    assert_equal false, [2,nil,4,8].every?
+    assert_equal true,  [2,4,6,8,10].seq.every?(&:even?)
+    assert_equal false, [2,4,6,8,11].seq.every?(&:even?)
+    assert_equal true,  [2,4,8].seq.every?
+    assert_equal false, [2,nil,4,8].seq.every?
   end
 
   should "some" do
-    assert_equal true, [2,4,6,8,11].some(&:even?)
-    assert_equal nil,  [2,4,6,8,10].some(&:odd?)
-    assert_equal 2,    [2,4,8].some
-    assert_equal nil,  [false,false,nil].some
+    assert_equal true, [2,4,6,8,11].seq.some(&:even?)
+    assert_equal nil,  [2,4,6,8,10].seq.some(&:odd?)
+    assert_equal 2,    [2,4,8].seq.some
+    assert_equal nil,  [false,false,nil].seq.some
   end
 
   should "drop" do
-    nums = [101,102,103,104,105,106,107,108,109,110]
+    nums = [101,102,103,104,105,106,107,108,109,110].seq
 
-    assert_equal nums.seq,  numbers(1).drop(100).take(10)
+    assert_equal nums,      numbers(1).drop(100).take(10)
     assert_equal [110].seq, nums.drop(9)
   end
 
   should "take_while" do
-    nums = [1,2,3,4,5,6,7]
+    nums = [1,2,3,4,5,6,7].seq
 
-    assert_equal nums.seq,  numbers(1).take_while {|i| i < 8}
+    assert_equal nums,      numbers(1).take_while {|i| i < 8}
     assert_equal LazySeq,   nums.take_while {|i| i < 3}.class
     assert_equal [1,2].seq, nums.take_while {|i| i < 3}
   end
 
   should "drop_while" do
-    nums = [11,12,13,14,15,16,17]
+    nums = [11,12,13,14,15,16,17].seq
 
-    assert_equal nums.seq,    numbers(1).drop_while {|i| i < 11}.take(7)
+    assert_equal nums,        numbers(1).drop_while {|i| i < 11}.take(7)
     assert_equal LazySeq,     nums.drop_while {|i| i < 16}.class
     assert_equal [16,17].seq, nums.drop_while {|i| i < 16}
   end
 
   should "split_at" do
-    assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].split_at(3)
+    assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].seq.split_at(3)
   end
 
   should "split_with" do
-    assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].split_with {|i| i < 4}
+    assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].seq.split_with {|i| i < 4}
   end
 
   should "==" do
@@ -118,11 +118,17 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "filter" do
-    assert_equal [2,4,6].seq, [1,2,3,4,5,6].filter(&:even?)
+    assert_equal [2,4,6].seq, [1,2,3,4,5,6].seq.filter(&:even?)
   end
 
   should "remove" do
-    assert_equal [1,3,5].seq, [1,2,3,4,5,6].remove(&:even?)
+    assert_equal [1,3,5].seq, [1,2,3,4,5,6].seq.remove(&:even?)
+  end
+
+  should "flatten" do
+    base = [1,3,5].seq
+    assert_equal base, base.flatten
+    assert_equal base, [[1,3,[[5]]]].seq.flatten
   end
 
   # should "partition" do

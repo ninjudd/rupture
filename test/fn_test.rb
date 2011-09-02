@@ -6,6 +6,6 @@ class FnTest < Test::Unit::TestCase
   end
 
   should "juxt" do
-    assert_equal [[2,0],[3,1],[4,2]].seq, [1,2,3].map(&Fn.juxt(Numeric.fn(:inc), Numeric.fn(:dec)))
+    assert_equal [[2,0],[3,1],[4,2]].seq, [1,2,3].map(&Fn.juxt(~:inc, ~:dec))
   end
 end
