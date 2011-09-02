@@ -3,6 +3,10 @@ require File.dirname(__FILE__) + '/test_helper'
 class SeqTest < Test::Unit::TestCase
   empty_seqs = [nil, [], Seq.empty, LazySeq.new, LazySeq.new{nil}, LazySeq.new{[]}]
 
+  def numbers(i)
+    LazySeq.new { Cons.new(i, numbers(i.inc))}
+  end
+
   should "empty seqs" do
     empty_seqs.each do |s|
       assert_nil s.seq
@@ -36,7 +40,7 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "take" do
-
+    assert_equal [1,2,3,4,5,6,7,8,9,10].seq, numbers(1).take(10)
   end
 
   # should "partition" do

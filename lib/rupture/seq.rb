@@ -18,6 +18,11 @@ module Rupture
       nth(index)
     end
 
+    def ==(other)
+      # TODO: make efficient
+      to_a == other.to_a
+    end
+
     def conj(item)
       Cons.new(item, self)
     end

@@ -58,4 +58,3 @@ class Hash
     dup.stringify_keys!
   end
 end
-
