@@ -46,9 +46,11 @@ module Rupture
 
     def self.concat(*colls)
       LazySeq.new do
-        colls = colls.drop_while(&:empty?)
-        if s = colls.first
-          Cons.new(s.first, concat(s.rest, *colls.rest))
+        head, *tail = colls.collect(&:seq)
+        if head
+          Cons.new(head.first, concat(head.rest, *tail))
+        elsif tail.any?
+          concat(*tail)
         end
       end
     end
