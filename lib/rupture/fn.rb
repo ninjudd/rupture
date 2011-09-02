@@ -20,20 +20,28 @@ class Proc
       not call(*args)
     end
   end
-end
 
-class Object
-  def fn(name)
-    block = instance_method(name)
-    lambda do |object, *args|
-      block.bind(object)[*args]
+  def partial(*partials)
+    lambda do |*args|
+      call(*(partials + args))
     end
   end
 
-  def fnc(name)
-    block = method(name)
+  alias -@ complement
+end
+
+class Symbol
+  def ~
     lambda do |object, *args|
-      block.bind(object)[*args]
+      object.method(self)[*args]
+    end
+  end
+end
+
+class Module
+  def [](method_name)
+    lambda do |*args|
+      self.send(method_name, *args)
     end
   end
 end
