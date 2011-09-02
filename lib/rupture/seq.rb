@@ -34,11 +34,14 @@ module Rupture
       @empty ||= EmptySeq.new
     end
 
+    # FIXME isn't totally lazy when working with > 1 collection
+    # If the first is empty, the second is still seq'd
     def self.map(*colls, &block)
       LazySeq.new do
-        if colls.every?(&:seq)
-          firsts = colls.collect(&:first)
-          rests  = colls.collect(&:rest)
+        seqs = colls.collect(&:seq)
+        if seqs.all?
+          firsts = seqs.collect(&:first)
+          rests  = seqs.collect(&:rest)
           Cons.new(yield(*firsts), map(*rests, &block))
         end
       end

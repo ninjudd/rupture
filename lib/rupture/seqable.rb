@@ -63,7 +63,7 @@ module Rupture
     end
 
     # TODO: Rename once flatten exists
-    def map_(*colls, &block)
+    def map(*colls, &block)
       Seq.map(self, *colls, &block)
     end
 
