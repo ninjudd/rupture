@@ -71,6 +71,10 @@ module Rupture
       true
     end
 
+    def flatten
+      tree_seq(~:sequential?, ~:seq).remove(&~:sequential?)
+    end
+
     def concat(*colls, &block)
       Seq.concat(self, *colls, &block)
     end
@@ -79,14 +83,14 @@ module Rupture
       Seq.mapcat(self, *colls, &block)
     end
 
-    def tree_seq(branch, children, root)
+    def tree_seq(branch, children)
       walk = lambda do |node|
         LazySeq.new do
           rest = children[node].mapcat(&walk) if branch[node]
           Cons.new(node, rest)
         end
       end
-      walk[root]
+      walk[self]
     end
 
     def every?(&block)
