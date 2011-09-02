@@ -40,7 +40,17 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "take" do
-    assert_equal [1,2,3,4,5,6,7,8,9,10].seq, numbers(1).take(10)
+    nums = [1,2,3,4,5,6,7,8,9,10]
+
+    assert_equal nums.seq, numbers(1).take(10)
+    assert_equal nums.seq, nums.take(10)
+  end
+
+  should "drop" do
+    nums = [101,102,103,104,105,106,107,108,109,110]
+
+    assert_equal nums.seq,  numbers(1).drop(100).take(10)
+    assert_equal [110].seq, nums.drop(9)
   end
 
   # should "partition" do
