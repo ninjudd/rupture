@@ -21,8 +21,6 @@ module Rupture
 end
 
 class Array
-  include Rupture::Seqable
-
   def seq
     Rupture::ArraySeq.new(self).seq
   end

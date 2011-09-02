@@ -1,5 +1,9 @@
 require File.dirname(__FILE__) + '/test_helper'
 
+class Array
+  include Rupture::Seqable
+end
+
 class SeqTest < Test::Unit::TestCase
   empty_seqs = [nil, [], Seq.empty, LazySeq.new, LazySeq.new{nil}, LazySeq.new{[]}]
 
@@ -43,6 +47,7 @@ class SeqTest < Test::Unit::TestCase
     nums = [1,2,3,4,5,6,7,8,9,10]
 
     assert_equal nums.seq, numbers(1).take(10)
+    assert_equal LazySeq,  nums.take(10).class
     assert_equal nums.seq, nums.take(10)
   end
 
@@ -51,6 +56,22 @@ class SeqTest < Test::Unit::TestCase
 
     assert_equal nums.seq,  numbers(1).drop(100).take(10)
     assert_equal [110].seq, nums.drop(9)
+  end
+
+  should "take_while" do
+    nums = [1,2,3,4,5,6,7]
+
+    assert_equal nums.seq,  numbers(1).take_while {|i| i < 8}
+    assert_equal LazySeq,   nums.take_while {|i| i < 3}.class
+    assert_equal [1,2].seq, nums.take_while {|i| i < 3}
+  end
+
+  should "drop_while" do
+    nums = [11,12,13,14,15,16,17]
+
+    assert_equal nums.seq,    numbers(1).drop_while {|i| i < 11}.take(7)
+    assert_equal LazySeq,     nums.drop_while {|i| i < 16}.class
+    assert_equal [16,17].seq, nums.drop_while {|i| i < 16}
   end
 
   # should "partition" do

@@ -39,6 +39,24 @@ module Rupture
       end
     end
 
+    def take_while(&block)
+      LazySeq.new do
+        s = seq
+        i = s.first
+        Cons.new(i, s.rest.take_while(&block)) if yield(i)
+      end
+    end
+
+    def drop_while(&block)
+      LazySeq.new do
+        s = seq
+        while s and yield(s.first)
+          s = s.next
+        end
+        s
+      end
+    end
+
     def nth(n)
       drop(n.dec).first
     end
@@ -103,5 +121,14 @@ module Rupture
     #   end
     #   results
     # end
+
+    # Remove methods in klass so they don't shadow Seqable.
+    def self.included(klass)
+      instance_methods.each do |method|
+        klass.class_eval do
+          remove_method method rescue nil
+        end
+      end
+    end
   end
 end
