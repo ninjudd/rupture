@@ -1,5 +1,5 @@
 module Rupture
-  module Seqable
+  module Sequence
     def first
       seq.first
     end
@@ -65,6 +65,10 @@ module Rupture
     # TODO: Rename once flatten exists
     def map_(*colls, &block)
       Seq.map(self, *colls, &block)
+    end
+
+    def sequential?
+      true
     end
 
     def concat(*colls, &block)

@@ -1,6 +1,6 @@
 module Rupture
   class Seq < Enumerable::Enumerator
-    include Seqable
+    include Sequence
     alias conj cons
 
     def initialize

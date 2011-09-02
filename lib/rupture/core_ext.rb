@@ -20,6 +20,12 @@ class Numeric
   end
 end
 
+class Object
+  def sequential?
+    nil
+  end
+end
+
 class Hash
   def symbolize_keys!
     keys.each do |key|
