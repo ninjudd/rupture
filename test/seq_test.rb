@@ -65,6 +65,8 @@ class SeqTest < Test::Unit::TestCase
     assert_equal nums,             numbers(1).take(10)
     assert_equal Rupture::LazySeq, nums.take(10).class
     assert_equal nums,             nums.take(10)
+    
+    assert nums.take(0) # lazy-seq, not nil
   end
 
   should "every?" do
@@ -86,6 +88,8 @@ class SeqTest < Test::Unit::TestCase
 
     assert_equal nums,      numbers(1).drop(100).take(10)
     assert_equal [110].seq, nums.drop(9)
+
+    assert nums.drop(100)
   end
 
   should "split_at" do
