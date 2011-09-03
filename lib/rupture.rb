@@ -30,7 +30,8 @@ module Rupture
   end
 
   def lazy_seq(f = nil, &fn)
-    LazySeq.new &(f || fn)
+    fn ||= f
+    LazySeq.new(&fn)
   end
 
   def cons(head, tail)
@@ -61,6 +62,7 @@ end
 
 require 'rupture/core_ext'
 require 'rupture/rails_ext'
+require 'rupture/fn'
 require 'rupture/symbol'
 require 'rupture/meta'
 require 'rupture/sequence'

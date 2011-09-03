@@ -43,30 +43,55 @@ module Rupture
       end
     end
 
-    def take_while(f = nil, &fn)
-      f ||= fn
+    def split_at(n)
+      [take(n), drop(n)]
+    end
+
+    def take_while(p = nil, &pred)
+      pred ||= p
       R.lazy_seq do
         if s = seq
           i = s.first
-          R.cons(i, s.rest.take_while(&f)) if f[i]
+          R.cons(i, s.rest.take_while(pred)) if pred[i]
         end
       end
     end
 
-    def drop_while(f = nil, &fn)
-      f ||= fn
+    def drop_while(p = nil, &pred)
+      pred ||= p
       R.lazy_seq do
         s = seq
-        while s and f[s.first]
+        while s and pred[s.first]
           s = s.next
         end
         s
       end
     end
 
-    def map(f = nil, &fn)
-      f ||= fn
-      R.map(self, &f)
+    def split_with(p = nil, &pred)
+      pred ||= p
+      [take_while(pred), drop_while(pred)]
+    end
+
+    def filter(p = nil, &pred)
+      pred ||= p
+      R.lazy_seq do
+        if s = seq
+          i = s.first
+          tail = s.rest.filter(pred)
+          pred[i] ? R.cons(i, tail) : tail
+        end
+      end
+    end
+
+    def remove(p = nil, &pred)
+      pred ||= p
+      filter(pred.complement)
+    end
+
+    def separate(p = nil, &pred)
+      pred ||= p
+      [filter(pred), remove(pred)]
     end
 
     def sequential?
@@ -75,7 +100,12 @@ module Rupture
 
     def flatten
       sequential = lambda {|x| x.class <= Seq or x.class == Array}
-      tree_seq(sequential, ~:seq).remove(&sequential)
+      tree_seq(sequential, :seq).remove(&sequential)
+    end
+
+    def map(f = nil, &fn)
+      fn ||= f
+      R.map(self, &fn)
     end
 
     def concat(*colls)
@@ -83,8 +113,8 @@ module Rupture
     end
 
     def mapcat(f = nil, &fn)
-      f ||= fn
-      R.mapcat(self, &f)
+      fn ||= f
+      R.mapcat(self, &fn)
     end
 
     def tree_seq(branch, children, &f)
@@ -99,21 +129,21 @@ module Rupture
       walk[self]
     end
 
-    def every?(f = nil, &fn)
-      f ||= fn || R[:identity]
+    def every?(p = nil, &pred)
+      pred ||= p || R[:identity]
       s = seq
       while s
-        return false unless f[s.first]
+        return false unless pred[s.first]
         s = s.next
       end
       true
     end
 
     def some(f = nil, &fn)
-      f ||= fn || R[:identity]
+      fn ||= f || R[:identity]
       s = seq
       while s
-        val = f[s.first]
+        val = fn[s.first]
         return val if val
         s = s.next
       end
@@ -122,33 +152,6 @@ module Rupture
     def nth(n)
       drop(n.dec).first
     end
-
-    def split_at(n)
-      [take(n), drop(n)]
-    end
-
-    def split_with(f = nil, &fn)
-      f ||= fn
-      [take_while(f), drop_while(f)]
-    end
-
-    def filter(f = nil, &fn)
-      f ||= fn
-      R.lazy_seq do
-        if s = seq
-          i = s.first
-          tail = s.rest.filter(f)
-          f[i] ? R.cons(i, tail) : tail
-        end
-      end
-    end
-
-    def remove(f = nil, &fn)
-      f ||= fn
-      filter(-f)
-    end
-
-    # alias separate partition
 
     # def partition(n = nil, step = n, pad = nil, &block)
     #   return separate(&block) if n.nil?

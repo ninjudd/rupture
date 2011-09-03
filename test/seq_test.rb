@@ -63,15 +63,15 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "every?" do
-    assert_equal true,  [2,4,6,8,10].seq.every?(~:even?)
-    assert_equal false, [2,4,6,8,11].seq.every?(~:even?)
+    assert_equal true,  [2,4,6,8,10].seq.every?(:even?)
+    assert_equal false, [2,4,6,8,11].seq.every?(:even?)
     assert_equal true,  [2,4,8].seq.every?
     assert_equal false, [2,nil,4,8].seq.every?
   end
 
   should "some" do
-    assert_equal true, [2,4,6,8,11].seq.some(~:even?)
-    assert_equal nil,  [2,4,6,8,10].seq.some(~:odd?)
+    assert_equal true, [2,4,6,8,11].seq.some(:even?)
+    assert_equal nil,  [2,4,6,8,10].seq.some(:odd?)
     assert_equal 2,    [2,4,8].seq.some
     assert_equal nil,  [false,false,nil].seq.some
   end
@@ -81,6 +81,10 @@ class SeqTest < Test::Unit::TestCase
 
     assert_equal nums,      numbers(1).drop(100).take(10)
     assert_equal [110].seq, nums.drop(9)
+  end
+
+  should "split_at" do
+    assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].seq.split_at(3)
   end
 
   should "take_while" do
@@ -99,10 +103,6 @@ class SeqTest < Test::Unit::TestCase
     assert_equal [16,17].seq, nums.drop_while {|i| i < 16}
   end
 
-  should "split_at" do
-    assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].seq.split_at(3)
-  end
-
   should "split_with" do
     assert_equal [[1,2,3].seq,[4,5,6].seq], [1,2,3,4,5,6].seq.split_with {|i| i < 4}
   end
@@ -118,11 +118,15 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "filter" do
-    assert_equal [2,4,6].seq, [1,2,3,4,5,6].seq.filter(~:even?)
+    assert_equal -[2,4,6], [1,2,3,4,5,6].seq.filter(:even?)
   end
 
   should "remove" do
-    assert_equal [1,3,5].seq, [1,2,3,4,5,6].seq.remove(~:even?)
+    assert_equal -[1,3,5], [1,2,3,4,5,6].seq.remove(:even?)
+  end
+
+  should "separate" do
+    assert_equal [-[2,4,6],-[1,3,5]], [1,2,3,4,5,6].seq.separate(:even?)
   end
 
   should "flatten" do
