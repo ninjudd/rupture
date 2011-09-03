@@ -59,7 +59,7 @@ class SeqTest < Test::Unit::TestCase
 
     assert_equal nums,             numbers(1).take(10)
     assert_equal Rupture::LazySeq, nums.take(10).class
-    assert_equal nums,              nums.take(10)
+    assert_equal nums,             nums.take(10)
   end
 
   should "every?" do
