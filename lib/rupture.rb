@@ -1,13 +1,14 @@
 module Rupture
   # FIXME isn't totally lazy when working with > 1 collection
   # If the first is empty, the second is still seq'd
-  def map(*colls, &block)
+  def map(*colls, &f)
+    f ||= colls.shift
     lazy_seq do
       seqs = colls.collect(&:seq)
       if seqs.all?
         firsts = seqs.collect(&:first)
         rests  = seqs.collect(&:rest)
-        cons(yield(*firsts), map(*rests, &block))
+        cons(f[*firsts], map(*rests, &f))
       end
     end
   end
@@ -23,12 +24,13 @@ module Rupture
     end
   end
 
-  def mapcat(*colls, &block)
-    concat(*map(*colls, &block))
+  def mapcat(*colls, &f)
+    f ||= colls.shift
+    concat(*map(*colls, &f))
   end
 
-  def lazy_seq(&block)
-    LazySeq.new(&block)
+  def lazy_seq(f = nil, &fn)
+    LazySeq.new &(f || fn)
   end
 
   def cons(head, tail)

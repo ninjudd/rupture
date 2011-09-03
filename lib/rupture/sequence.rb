@@ -43,27 +43,30 @@ module Rupture
       end
     end
 
-    def take_while(&block)
+    def take_while(f = nil, &fn)
+      f ||= fn
       R.lazy_seq do
         if s = seq
           i = s.first
-          R.cons(i, s.rest.take_while(&block)) if yield(i)
+          R.cons(i, s.rest.take_while(&f)) if f[i]
         end
       end
     end
 
-    def drop_while
+    def drop_while(f = nil, &fn)
+      f ||= fn
       R.lazy_seq do
         s = seq
-        while s and yield(s.first)
+        while s and f[s.first]
           s = s.next
         end
         s
       end
     end
 
-    def map(*colls, &block)
-      R.map(self, *colls, &block)
+    def map(f = nil, &fn)
+      f ||= fn
+      R.map(self, &f)
     end
 
     def sequential?
@@ -75,15 +78,18 @@ module Rupture
       tree_seq(sequential, ~:seq).remove(&sequential)
     end
 
-    def concat(*colls, &block)
-      R.concat(self, *colls, &block)
+    def concat(*colls)
+      R.concat(self, *colls)
     end
 
-    def mapcat(*colls, &block)
-      R.mapcat(self, *colls, &block)
+    def mapcat(f = nil, &fn)
+      f ||= fn
+      R.mapcat(self, &f)
     end
 
-    def tree_seq(branch, children)
+    def tree_seq(branch, children, &f)
+      branch   ||= f
+      children ||= f
       walk = lambda do |node|
         R.lazy_seq do
           rest = children[node].mapcat(&walk) if branch[node]
@@ -93,22 +99,21 @@ module Rupture
       walk[self]
     end
 
-    def every?(&block)
-      block ||= R[:identity]
-
+    def every?(f = nil, &fn)
+      f ||= fn || R[:identity]
       s = seq
       while s
-        return false unless block[s.first]
+        return false unless f[s.first]
         s = s.next
       end
       true
     end
 
-    def some(&block)
-      block ||= R[:identity]
+    def some(f = nil, &fn)
+      f ||= fn || R[:identity]
       s = seq
       while s
-        val = block[s.first]
+        val = f[s.first]
         return val if val
         s = s.next
       end
@@ -122,22 +127,25 @@ module Rupture
       [take(n), drop(n)]
     end
 
-    def split_with(&block)
-      [take_while(&block), drop_while(&block)]
+    def split_with(f = nil, &fn)
+      f ||= fn
+      [take_while(f), drop_while(f)]
     end
 
-    def filter(&block)
+    def filter(f = nil, &fn)
+      f ||= fn
       R.lazy_seq do
         if s = seq
           i = s.first
-          tail = s.rest.filter(&block)
-          yield(i) ? R.cons(i, tail) : tail
+          tail = s.rest.filter(f)
+          f[i] ? R.cons(i, tail) : tail
         end
       end
     end
 
-    def remove(&block)
-      filter(&block.complement)
+    def remove(f = nil, &fn)
+      f ||= fn
+      filter(-f)
     end
 
     # alias separate partition

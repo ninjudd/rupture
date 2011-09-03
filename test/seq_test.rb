@@ -41,7 +41,7 @@ class SeqTest < Test::Unit::TestCase
 
   should "map" do
     assert_equal [9,12,15].seq, R.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
-    assert_equal [9,12,15].seq, [0,0,0].seq.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c,d| a + b + c + d}
+    assert_equal [9,12,15].seq, [3,4,5].seq.map {|a| a * 3}
   end
 
   should "concat" do
@@ -51,7 +51,7 @@ class SeqTest < Test::Unit::TestCase
 
   should "mapcat" do
     assert_equal [1,3,5,2,4,6,3,5,7].seq, R.mapcat([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| [a,b,c]}
-    assert_equal [1,3,5,7,2,4,6,8].seq,   [1,2].seq.mapcat([3,4],[5,6],[7,8]) {|a,b,c,d| [a,b,c,d]}
+    assert_equal [1,1,2,3,2,1,2,3].seq,   [1,2].seq.mapcat {|a| [a,1,2,3]}
   end
 
   should "take" do
@@ -63,15 +63,15 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "every?" do
-    assert_equal true,  [2,4,6,8,10].seq.every?(&:even?)
-    assert_equal false, [2,4,6,8,11].seq.every?(&:even?)
+    assert_equal true,  [2,4,6,8,10].seq.every?(~:even?)
+    assert_equal false, [2,4,6,8,11].seq.every?(~:even?)
     assert_equal true,  [2,4,8].seq.every?
     assert_equal false, [2,nil,4,8].seq.every?
   end
 
   should "some" do
-    assert_equal true, [2,4,6,8,11].seq.some(&:even?)
-    assert_equal nil,  [2,4,6,8,10].seq.some(&:odd?)
+    assert_equal true, [2,4,6,8,11].seq.some(~:even?)
+    assert_equal nil,  [2,4,6,8,10].seq.some(~:odd?)
     assert_equal 2,    [2,4,8].seq.some
     assert_equal nil,  [false,false,nil].seq.some
   end
@@ -118,11 +118,11 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "filter" do
-    assert_equal [2,4,6].seq, [1,2,3,4,5,6].seq.filter(&:even?)
+    assert_equal [2,4,6].seq, [1,2,3,4,5,6].seq.filter(~:even?)
   end
 
   should "remove" do
-    assert_equal [1,3,5].seq, [1,2,3,4,5,6].seq.remove(&:even?)
+    assert_equal [1,3,5].seq, [1,2,3,4,5,6].seq.remove(~:even?)
   end
 
   should "flatten" do
