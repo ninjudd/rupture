@@ -201,5 +201,12 @@ module Rupture
     #   end
     #   results
     # end
+
+    def self.inject(klass)
+      instance_methods.each do |method|
+        klass.send(:include, self)
+        klass.send(:define_method, "s#{method}", instance_method(method))
+      end
+    end
   end
 end

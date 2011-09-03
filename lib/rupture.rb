@@ -15,4 +15,5 @@ require 'rupture/list'
 
 F = Rupture::Function
 
+Rupture::Sequence.inject(Array)
 Object.send(:include, Rupture::Meta)
