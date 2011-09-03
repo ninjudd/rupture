@@ -136,12 +136,7 @@ module Rupture
 
     def every?(p = nil, &pred)
       pred ||= p || F[:identity]
-      s = seq
-      while s
-        return false unless pred[s.first]
-        s = s.next
-      end
-      true
+      all?(&pred)
     end
 
     def some(f = nil, &fn)
