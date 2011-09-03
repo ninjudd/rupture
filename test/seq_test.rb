@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class SeqTest < Test::Unit::TestCase
-  empty_seqs = [nil, [], R::Seq.empty, R.lazy_seq{nil}, R.lazy_seq{[]}]
+  empty_seqs = [nil, [], Rupture::Seq.empty, F.lazy_seq{nil}, F.lazy_seq{[]}]
 
   def numbers(i)
-    R.lazy_seq { R.cons(i, numbers(i.inc))}
+    F.lazy_seq { F.cons(i, numbers(i.inc))}
   end
 
   should "empty seqs" do
@@ -17,20 +17,20 @@ class SeqTest < Test::Unit::TestCase
 
   should "empty lazy_seqs" do
     empty_seqs.each do |s|
-      assert_nil R.lazy_seq{s}.seq
+      assert_nil F.lazy_seq{s}.seq
     end
   end
 
   should "cons" do
     empty_seqs.each do |cdr|
-      cons = R.cons(1,cdr)
+      cons = F.cons(1,cdr)
       assert          cons.seq
       assert_equal 1, cons.first
       assert          cons.rest
       assert_nil      cons.next
       assert_nil      cons.rest.seq
 
-      cons = R.cons(2, cons)
+      cons = F.cons(2, cons)
       assert          cons.seq
       assert_equal 2, cons.first
       assert          cons.rest
@@ -40,26 +40,26 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "map" do
-    assert_equal [9,12,15].seq, R.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
+    assert_equal [9,12,15].seq, F.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
     assert_equal [9,12,15].seq, [3,4,5].seq.map {|a| a * 3}
   end
 
   should "concat" do
-    assert_equal [1,2,3,4,5,6].seq, R.concat([1,2],[3,4,5],[6])
+    assert_equal [1,2,3,4,5,6].seq, F.concat([1,2],[3,4,5],[6])
     assert_equal [1,2,3,4,5,6].seq, [1,2].seq.concat([3,4,5],[6])
   end
 
   should "mapcat" do
-    assert_equal [1,3,5,2,4,6,3,5,7].seq, R.mapcat([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| [a,b,c]}
+    assert_equal [1,3,5,2,4,6,3,5,7].seq, F.mapcat([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| [a,b,c]}
     assert_equal [1,1,2,3,2,1,2,3].seq,   [1,2].seq.mapcat {|a| [a,1,2,3]}
   end
 
   should "take" do
     nums = [1,2,3,4,5,6,7,8,9,10].seq
 
-    assert_equal nums,       numbers(1).take(10)
-    assert_equal R::LazySeq, nums.take(10).class
-    assert_equal nums,       nums.take(10)
+    assert_equal nums,             numbers(1).take(10)
+    assert_equal Rupture::LazySeq, nums.take(10).class
+    assert_equal nums,              nums.take(10)
   end
 
   should "every?" do
@@ -90,17 +90,17 @@ class SeqTest < Test::Unit::TestCase
   should "take_while" do
     nums = [1,2,3,4,5,6,7].seq
 
-    assert_equal nums,       numbers(1).take_while {|i| i < 8}
-    assert_equal R::LazySeq, nums.take_while {|i| i < 3}.class
-    assert_equal [1,2].seq,  nums.take_while {|i| i < 3}
+    assert_equal nums,             numbers(1).take_while {|i| i < 8}
+    assert_equal Rupture::LazySeq, nums.take_while {|i| i < 3}.class
+    assert_equal [1,2].seq,        nums.take_while {|i| i < 3}
   end
 
   should "drop_while" do
     nums = [11,12,13,14,15,16,17].seq
 
-    assert_equal nums,        numbers(1).drop_while {|i| i < 11}.take(7)
-    assert_equal R::LazySeq,  nums.drop_while {|i| i < 16}.class
-    assert_equal [16,17].seq, nums.drop_while {|i| i < 16}
+    assert_equal nums,             numbers(1).drop_while {|i| i < 11}.take(7)
+    assert_equal Rupture::LazySeq, nums.drop_while {|i| i < 16}.class
+    assert_equal [16,17].seq,      nums.drop_while {|i| i < 16}
   end
 
   should "split_with" do
@@ -108,9 +108,9 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "==" do
-    a = R.cons(1, R.cons(2, nil))
-    b = R.cons(1, nil)
-    c = R.list(1, 2)
+    a = F.cons(1, F.cons(2, nil))
+    b = F.cons(1, nil)
+    c = F.list(1, 2)
 
     assert_equal     a, c
     assert_not_equal a, b

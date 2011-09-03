@@ -21,19 +21,19 @@ module Rupture
     end
 
     def cons(item)
-      R.cons(item, self)
+      F.cons(item, self)
     end
 
     def take(n)
-      R.lazy_seq do
+      F.lazy_seq do
         if n.pos? and s = seq
-          R.cons(s.first, s.rest.take(n.dec))
+          F.cons(s.first, s.rest.take(n.dec))
         end
       end
     end
 
     def drop(n)
-      R.lazy_seq do
+      F.lazy_seq do
         s = seq
         while s and n.pos?
           n = n.dec
@@ -49,17 +49,17 @@ module Rupture
 
     def take_while(p = nil, &pred)
       pred ||= p
-      R.lazy_seq do
+      F.lazy_seq do
         if s = seq
           i = s.first
-          R.cons(i, s.rest.take_while(pred)) if pred[i]
+          F.cons(i, s.rest.take_while(pred)) if pred[i]
         end
       end
     end
 
     def drop_while(p = nil, &pred)
       pred ||= p
-      R.lazy_seq do
+      F.lazy_seq do
         s = seq
         while s and pred[s.first]
           s = s.next
@@ -75,11 +75,11 @@ module Rupture
 
     def filter(p = nil, &pred)
       pred ||= p
-      R.lazy_seq do
+      F.lazy_seq do
         if s = seq
           i = s.first
           tail = s.rest.filter(pred)
-          pred[i] ? R.cons(i, tail) : tail
+          pred[i] ? F.cons(i, tail) : tail
         end
       end
     end
@@ -105,32 +105,32 @@ module Rupture
 
     def map(f = nil, &fn)
       fn ||= f
-      R.map(self, &fn)
+      F.map(self, &fn)
     end
 
     def concat(*colls)
-      R.concat(self, *colls)
+      F.concat(self, *colls)
     end
 
     def mapcat(f = nil, &fn)
       fn ||= f
-      R.mapcat(self, &fn)
+      F.mapcat(self, &fn)
     end
 
     def tree_seq(branch, children, &f)
       branch   ||= f
       children ||= f
       walk = lambda do |node|
-        R.lazy_seq do
+        F.lazy_seq do
           rest = children[node].mapcat(&walk) if branch[node]
-          R.cons(node, rest)
+          F.cons(node, rest)
         end
       end
       walk[self]
     end
 
     def every?(p = nil, &pred)
-      pred ||= p || R[:identity]
+      pred ||= p || F[:identity]
       s = seq
       while s
         return false unless pred[s.first]
@@ -140,7 +140,7 @@ module Rupture
     end
 
     def some(f = nil, &fn)
-      fn ||= f || R[:identity]
+      fn ||= f || F[:identity]
       s = seq
       while s
         val = fn[s.first]
