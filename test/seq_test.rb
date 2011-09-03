@@ -54,6 +54,11 @@ class SeqTest < Test::Unit::TestCase
     assert_equal [1,1,2,3,2,1,2,3].seq,   [1,2].seq.mapcat {|a| [a,1,2,3]}
   end
 
+  should "reduce" do
+    assert_equal 10,  [1,2,3,4].reduce(:+)
+    assert_equal 240, [1,2,3,4].reduce(:*, 10)
+  end
+
   should "take" do
     nums = [1,2,3,4,5,6,7,8,9,10].seq
 
