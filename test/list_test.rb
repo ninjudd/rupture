@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class ListTest < Test::Unit::TestCase
   should "act like a seq" do
-    list = List.new(1, 2, 3, 4)
+    list = R.list(1, 2, 3, 4)
     assert_equal list.count,                4
     assert_equal list.first,                1
     assert_equal list.rest.next.rest.first, 4
@@ -10,7 +10,7 @@ class ListTest < Test::Unit::TestCase
   end
 
   should "count quickly" do
-    list = List.new(1, 2, 3, 4)
+    list = R.list(1, 2, 3, 4)
     def list.each
       raise "Tried to compute count by doing O(N) walk"
     end

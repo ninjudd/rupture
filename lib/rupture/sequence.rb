@@ -21,19 +21,19 @@ module Rupture
     end
 
     def cons(item)
-      Cons.new(item, self)
+      R.cons(item, self)
     end
 
     def take(n)
-      LazySeq.new do
+      R.lazy_seq do
         if n.pos? and s = seq
-          Cons.new(s.first, s.rest.take(n.dec))
+          R.cons(s.first, s.rest.take(n.dec))
         end
       end
     end
 
     def drop(n)
-      LazySeq.new do
+      R.lazy_seq do
         s = seq
         while s and n.pos?
           n = n.dec
@@ -44,16 +44,16 @@ module Rupture
     end
 
     def take_while(&block)
-      LazySeq.new do
+      R.lazy_seq do
         if s = seq
           i = s.first
-          Cons.new(i, s.rest.take_while(&block)) if yield(i)
+          R.cons(i, s.rest.take_while(&block)) if yield(i)
         end
       end
     end
 
     def drop_while
-      LazySeq.new do
+      R.lazy_seq do
         s = seq
         while s and yield(s.first)
           s = s.next
@@ -63,7 +63,7 @@ module Rupture
     end
 
     def map(*colls, &block)
-      Seq.map(self, *colls, &block)
+      R.map(self, *colls, &block)
     end
 
     def sequential?
@@ -76,25 +76,26 @@ module Rupture
     end
 
     def concat(*colls, &block)
-      Seq.concat(self, *colls, &block)
+      R.concat(self, *colls, &block)
     end
 
     def mapcat(*colls, &block)
-      Seq.mapcat(self, *colls, &block)
+      R.mapcat(self, *colls, &block)
     end
 
     def tree_seq(branch, children)
       walk = lambda do |node|
-        LazySeq.new do
+        R.lazy_seq do
           rest = children[node].mapcat(&walk) if branch[node]
-          Cons.new(node, rest)
+          R.cons(node, rest)
         end
       end
       walk[self]
     end
 
     def every?(&block)
-      block ||= Fn.identity
+      block ||= R[:identity]
+
       s = seq
       while s
         return false unless block[s.first]
@@ -104,7 +105,7 @@ module Rupture
     end
 
     def some(&block)
-      block ||= Fn.identity
+      block ||= R[:identity]
       s = seq
       while s
         val = block[s.first]
@@ -126,11 +127,11 @@ module Rupture
     end
 
     def filter(&block)
-      LazySeq.new do
+      R.lazy_seq do
         if s = seq
           i = s.first
           tail = s.rest.filter(&block)
-          yield(i) ? Cons.new(i, tail) : tail
+          yield(i) ? R.cons(i, tail) : tail
         end
       end
     end

@@ -20,6 +20,30 @@ class Numeric
   end
 end
 
+class Proc
+  def complement
+    lambda do |*args|
+      not call(*args)
+    end
+  end
+
+  def partial(*partials)
+    lambda do |*args|
+      call(*(partials + args))
+    end
+  end
+
+  alias -@ complement
+end
+
+class Module
+  def [](method_name)
+    lambda do |*args|
+      self.send(method_name, *args)
+    end
+  end
+end
+
 class Symbol
   def name
     parse_namespace unless @name
@@ -31,49 +55,16 @@ class Symbol
     @namespace
   end
 
+  def ~
+    lambda do |object, *args|
+      object.method(self)[*args]
+    end
+  end
+
 private
 
   def parse_namespace
     @name, *ns = to_s.split('/').reverse
     @namespace = ns.join('/')
-  end
-end
-
-class Hash
-  def symbolize_keys!
-    keys.each do |key|
-      self[(key.to_sym rescue key) || key] = delete(key)
-    end
-    self
-  end
-
-  def symbolize_keys
-    dup.symbolize_keys!
-  end
-
-  def deep_symbolize_keys!
-    values.each do |val|
-      val.deep_symbolize_keys! if val.is_a?(Hash)
-    end
-    symbolize_keys!
-  end
-
-  def deep_symbolize_keys
-    copy = symbolize_keys
-    copy.each do |key, val|
-      copy[key] = val.deep_symbolize_keys if val.is_a?(Hash)
-    end
-    copy
-  end
-
-  def stringify_keys!
-    keys.each do |key|
-      self[key.to_s] = delete(key)
-    end
-    self
-  end
-
-  def stringify_keys
-    dup.stringify_keys!
   end
 end
