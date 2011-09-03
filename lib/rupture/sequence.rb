@@ -119,19 +119,7 @@ module Rupture
 
     def reduce(*args, &fn)
       fn ||= args.shift
-      if args.size == 1
-        acc = args.first
-        s   = self
-      else
-        acc = first
-        s   = rest
-      end
-
-      while s = s.seq
-        acc = fn[acc, s.first]
-        s   = s.rest
-      end
-      acc
+      super(*args, &fn)
     end
 
     def tree_seq(branch, children, &f)
