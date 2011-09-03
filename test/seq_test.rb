@@ -91,7 +91,7 @@ class SeqTest < Test::Unit::TestCase
     nums = [1,2,3,4,5,6,7].seq
 
     assert_equal nums,       numbers(1).take_while {|i| i < 8}
-    assert_equal R::LazySeq,  nums.take_while {|i| i < 3}.class
+    assert_equal R::LazySeq, nums.take_while {|i| i < 3}.class
     assert_equal [1,2].seq,  nums.take_while {|i| i < 3}
   end
 
@@ -99,7 +99,7 @@ class SeqTest < Test::Unit::TestCase
     nums = [11,12,13,14,15,16,17].seq
 
     assert_equal nums,        numbers(1).drop_while {|i| i < 11}.take(7)
-    assert_equal R::LazySeq,   nums.drop_while {|i| i < 16}.class
+    assert_equal R::LazySeq,  nums.drop_while {|i| i < 16}.class
     assert_equal [16,17].seq, nums.drop_while {|i| i < 16}
   end
 
