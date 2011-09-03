@@ -12,9 +12,11 @@ module Rupture
         call(*(partials + args))
       end
     end
+  end
 
-    def fn
-      self
+  def to_proc
+    lambda do |key|
+      self[key]
     end
   end
 end
@@ -30,21 +32,20 @@ end
 class Symbol
   include Rupture::Fn
 
-  def fn
-    method(:call)
-  end
-
   def call(object, *args)
     object.method(self)[*args]
   end
+  alias [] call
+end
 
-  def [](object, *args)
-    if args.empty? and object.kind_of?(Hash)
-      object[self]
-    else
-      call(object, *args)
-    end
-  end
+class Hash
+  include Rupture::Fn
+  alias call []
+end
+
+class Array
+  include Rupture::Fn
+  alias call []
 end
 
 class Module
@@ -52,11 +53,5 @@ class Module
     lambda do |*args|
       self.send(method_name, *(args + partials))
     end
-  end
-end
-
-class NilClass
-  def fn
-    nil
   end
 end
