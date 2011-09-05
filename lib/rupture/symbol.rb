@@ -5,7 +5,7 @@ class Rupture::Symbol # Use for symbols
   def_delegators :@symbol, :to_s, :name, :namespace
 
   def initialize(*args)
-    raise ArgumentError, "wrong number of arguments (#{args.size} for 2)" unless [1,2].include?(args.size)
+    Utils.verify_args(args, 1, 2)
     @symbol = args.join("/").to_sym
   end
 

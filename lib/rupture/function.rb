@@ -30,6 +30,14 @@ module Rupture
       concat(*map(*colls, &f))
     end
 
+    def iterate(*args, &f)
+      f ||= args.shift
+      x = args.first
+      lazy_seq do
+        cons(x, iterate(f[x], &f))
+      end
+    end
+
     def lazy_seq(f = nil, &fn)
       fn ||= f
       LazySeq.new(&fn)

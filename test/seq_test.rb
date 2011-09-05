@@ -71,7 +71,7 @@ class SeqTest < Test::Unit::TestCase
     assert_equal nums,             numbers(1).take(10)
     assert_equal Rupture::LazySeq, nums.take(10).class
     assert_equal nums,             nums.take(10)
-    
+
     assert nums.take(0) # lazy-seq, not nil
   end
 
@@ -92,8 +92,9 @@ class SeqTest < Test::Unit::TestCase
   should "drop" do
     nums = [101,102,103,104,105,106,107,108,109,110].seq
 
-    assert_equal nums,      numbers(1).drop(100).take(10)
-    assert_equal [110].seq, nums.drop(9)
+    assert_equal nums,        numbers(1).drop(100).take(10)
+    assert_equal [110].seq,   nums.drop(9)
+    assert_equal [1,2,3].seq, [1,2,3].seq.drop(0)
 
     assert nums.drop(100)
   end
@@ -148,6 +149,11 @@ class SeqTest < Test::Unit::TestCase
     base = [1,3,5].seq
     assert_equal base, base.flatten
     assert_equal base, [[1,3,[[5]]]].seq.flatten
+  end
+
+  should "iterate" do
+    assert_equal [1024, 2048].seq, F.iterate(1) {|x| x * 2}.drop(10).take(2)
+    assert_equal [11, 12, 13].seq, F.iterate(:inc, 1).drop(10).take(3)
   end
 
   # should "partition" do
