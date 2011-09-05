@@ -5,12 +5,13 @@ module Rupture
         a[self]
       end
     end
-    alias ~ lookup
   end
 end
 
 class Symbol
   include Rupture::Lookup
+
+  alias ~ lookup
 end
 
 class String

@@ -1,3 +1,5 @@
+require 'set'
+
 module Rupture
   module Fn
     def complement
@@ -12,11 +14,11 @@ module Rupture
         call(*(partials + args))
       end
     end
-  end
 
-  def to_proc
-    lambda do |key|
-      self[key]
+    def to_proc
+      lambda do |key|
+        self[key]
+      end
     end
   end
 end
@@ -45,6 +47,15 @@ end
 
 class Array
   include Rupture::Fn
+  alias call []
+end
+
+class Set
+  include Rupture::Fn
+
+  def [](key)
+    key if include?(key)
+  end
   alias call []
 end
 
