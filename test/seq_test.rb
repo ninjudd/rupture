@@ -21,6 +21,12 @@ class SeqTest < Test::Unit::TestCase
     end
   end
 
+  should "convert enumerables into seq" do
+    assert_equal [20,21,22].seq, (-22..22).seq.drop(42)
+    assert_equal [101,102].seq,  (1..200).seq.drop(100).take(2)
+    assert_equal "bbq",          ("bar".."foo").seq.drop(25).first
+  end
+
   should "cons" do
     empty_seqs.each do |cdr|
       cons = F.cons(1,cdr)
