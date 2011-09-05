@@ -153,30 +153,24 @@ module Rupture
       drop(n.dec).first
     end
 
-    # def partition(n = nil, step = n, pad = nil, &block)
-    #   return separate(&block) if n.nil?
+    def partition(n, step = n, pad = nil)
+      F.lazy_seq do
+        if s = seq
+          p = take(n)
+          if n == p.count
+            F.cons(p, drop(step).partition(n, step, pad))
+          elsif pad
+            F.cons(p.concat(pad).take(n), nil)
+          else
+            nil
+          end
+        end
+      end
+    end
 
-    #   results = []
-    #   coll = self
-
-    #   while coll.size >= n
-    #     results << coll.take(n)
-    #     coll = coll.drop(step)
-    #   end
-
-    #   if pad and coll.any?
-    #     results << coll + pad.take(n - coll.size)
-    #   end
-    #   results
-    # end
-
-    # def partition_all(n, step = n)
-    #   partition(n, step, [])
-    # end
-
-    # def partition_all(n, step = n)
-    #   partition(n, step, [])
-    # end
+    def partition_all(n, step = n)
+      partition(n, step, [])
+    end
 
     # def partition_by
     #   results  = []
