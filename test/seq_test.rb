@@ -101,6 +101,11 @@ class SeqTest < Test::Unit::TestCase
     assert_equal nil,           nums.drop_last(10).seq
   end
 
+  should "last" do
+    assert_equal 110, [101,102,103,104,105,106,107,108,109,110].last
+    assert_equal nil, [].last
+  end
+
   should "every?" do
     assert_equal true,  [2,4,6,8,10].seq.every?(:even?)
     assert_equal false, [2,4,6,8,11].seq.every?(:even?)

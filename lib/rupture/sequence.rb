@@ -62,6 +62,10 @@ module Rupture
       F.map(self, drop(n)) {|x,_| x}
     end
 
+    def last
+      take_last(1).first
+    end
+
     def split_at(n)
       [take(n), drop(n)]
     end
