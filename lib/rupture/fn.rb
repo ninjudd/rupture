@@ -15,10 +15,10 @@ module Rupture
       end
     end
 
-    def apply(*args)
-      last = args.pop
-      call(*F.concat(args, last))
-    end
+    # def apply(*args)
+    #   last = args.pop
+    #   call(*F.concat(args, last))
+    # end
 
     def to_proc
       lambda do |key|

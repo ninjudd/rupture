@@ -9,9 +9,9 @@ class FnTest < Test::Unit::TestCase
     assert_equal [[2,0],[3,1],[4,2]].seq, [1,2,3].seq.map(F.juxt(:inc, :dec))
   end
 
-  should "apply" do
-    assert_equal [1,2,3,4,5,6].seq, F[:concat].apply([1],[2],[[3,4],[5,6]])
-  end
+  # should "apply" do
+  #   assert_equal [1,2,3,4,5,6].seq, F[:concat].apply([1],[2],[[3,4],[5,6]])
+  # end
 
   should "use hash as fn" do
     assert_equal [1, 2, 3, nil].seq, [:foo, :bar, :baz, :bam].seq.map({:foo => 1, :bar => 2, :baz => 3})
