@@ -61,8 +61,8 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "reduce" do
-    assert_equal 10,  [1,2,3,4].reduce(:+)
-    assert_equal 240, [1,2,3,4].reduce(:*, 10)
+    assert_equal 10,  [1,2,3,4].seq.reduce(:+)
+    assert_equal 240, [1,2,3,4].seq.reduce(:*, 10)
   end
 
   should "take" do
@@ -155,15 +155,15 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "filter" do
-    assert_equal -[2,4,6], [1,2,3,4,5,6].seq.filter(:even?)
+    assert_equal [2,4,6].seq, [1,2,3,4,5,6].seq.filter(:even?)
   end
 
   should "remove" do
-    assert_equal -[1,3,5], [1,2,3,4,5,6].seq.remove(:even?)
+    assert_equal [1,3,5].seq, [1,2,3,4,5,6].seq.remove(:even?)
   end
 
   should "separate" do
-    assert_equal [-[2,4,6],-[1,3,5]], [1,2,3,4,5,6].seq.separate(:even?)
+    assert_equal [[2,4,6].seq,[1,3,5].seq], [1,2,3,4,5,6].seq.separate(:even?)
   end
 
   should "flatten" do

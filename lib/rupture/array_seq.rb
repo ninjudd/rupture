@@ -24,12 +24,10 @@ class Array
   def seq
     Rupture::ArraySeq.new(self).seq
   end
-  alias -@ seq
 end
 
 class String
   def seq
     Rupture::ArraySeq.new(self).seq
   end
-  alias -@ seq
 end
