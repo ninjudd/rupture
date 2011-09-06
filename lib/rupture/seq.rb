@@ -43,6 +43,8 @@ module Rupture
 end
 
 class NilClass
+  include Rupture::Sequence
+
   def seq
     nil
   end
