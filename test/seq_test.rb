@@ -168,11 +168,12 @@ class SeqTest < Test::Unit::TestCase
     assert_equal [[1,2],[2,3],[3]].seq.map(:seq), [1,2,3].seq.partition_all(2,1)
   end
 
-  # should "partition_by" do
-  #   assert_equal [[1,3], [2,4], [3], [4,8]], [1,3,2,4,3,4,8].partition_by {|i| i.odd?}
-  # end
+  should "partition_by" do
+    assert_equal [[1,3,5,3,9]].seq.map(:seq),              [1,3,5,3,9].seq.partition_by {|i| i.odd?}
+    assert_equal [[1,3], [2,4], [3], [4,8]].seq.map(:seq), [1,3,2,4,3,4,8].seq.partition_by {|i| i.odd?}
+  end
 
-  # should "partition_between" do
-  #   assert_equal [[1], [nil, 4, 3], [nil, 8]], [1,nil,4,3,nil,8].partition_between {|a,b| b == nil}
-  # end
+  should "partition_between" do
+    assert_equal [[1], [nil, 4, 3], [nil, 8]].seq.map(:seq), [1,nil,4,3,nil,8].seq.partition_between {|a,b| b == nil}
+  end
 end

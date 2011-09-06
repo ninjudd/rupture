@@ -12,6 +12,10 @@ module Rupture
       rest.seq
     end
 
+    def second
+      rest.first
+    end
+
     def empty?
       not seq
     end
@@ -172,29 +176,27 @@ module Rupture
       partition(n, step, [])
     end
 
-    # def partition_by
-    #   results  = []
-    #   previous = nil
+    def partition_by(f = nil, &fn)
+      fn ||= f
+      F.lazy_seq do
+        if s = seq
+          head = s.first
+          val  = fn[head]
+          run = F.cons(head, s.rest.take_while {|i| val == fn[i]})
+          F.cons(run, s.drop(run.count).partition_by(fn))
+        end
+      end
+    end
 
-    #   each do |i|
-    #     current = yield(i)
-    #     results << [] if current != previous or results.empty?
-    #     results.last << i
-    #     previous = current
-    #   end
-    #   results
-    # end
-
-    # def partition_between
-    #   return [] if empty?
-    #   results = [[first]]
-
-    #   partition(2, 1).each do |(a,b)|
-    #     results << [] if yield(a,b)
-    #     results.last << b
-    #   end
-    #   results
-    # end
+    def partition_between(f = nil, &fn)
+      fn ||= f
+      F.lazy_seq do
+        if s = seq
+          run = F.cons(s.first, s.partition(2,1).take_while {|i| not fn[*i]}.map(:second))
+          F.cons(run, s.drop(run.count).partition_between(fn))
+        end
+      end
+    end
 
     def self.inject(klass)
       instance_methods.each do |method|
