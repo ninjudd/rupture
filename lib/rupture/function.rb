@@ -30,6 +30,17 @@ module Rupture
       concat(*map(*colls, &f))
     end
 
+    def loop(*vals)
+      more  = true
+      recur = lambda {|*vals| more = true}
+
+      while more
+        more = nil
+        result = yield(recur, *vals)
+      end
+      result
+    end
+
     def iterate(*args, &f)
       f ||= args.shift
       Utils.verify_args(args, 1)

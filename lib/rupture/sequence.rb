@@ -38,13 +38,28 @@ module Rupture
 
     def drop(n)
       F.lazy_seq do
-        s = seq
-        while s and n.pos?
-          n = n.dec
-          s = s.next
+        F.loop(n, seq) do |recur, n, s|
+          if s and n.pos?
+            recur[n.dec, s.next]
+          else
+            s
+          end
         end
-        s
       end
+    end
+
+    def take_last(n)
+      F.loop(seq, drop(n).seq) do |recur, s, lead|
+        if lead
+          recur[s.next, lead.next]
+        else
+          s
+        end
+      end
+    end
+
+    def drop_last(n)
+      F.map(self, drop(n)) {|x,_| x}
     end
 
     def split_at(n)
@@ -64,11 +79,13 @@ module Rupture
     def drop_while(p = nil, &pred)
       pred ||= p
       F.lazy_seq do
-        s = seq
-        while s and pred[s.first]
-          s = s.next
+        F.loop(seq) do |recur, s|
+          if s and pred[s.first]
+            recur[s.next]
+          else
+            s
+          end
         end
-        s
       end
     end
 
@@ -145,11 +162,14 @@ module Rupture
 
     def some(f = nil, &fn)
       fn ||= f || F[:identity]
-      s = seq
-      while s
-        val = fn[s.first]
-        return val if val
-        s = s.next
+      F.loop(seq) do |recur, s|
+        if s
+          if val = fn[s.first]
+            val
+          else
+            recur[s.next]
+          end
+        end
       end
     end
 

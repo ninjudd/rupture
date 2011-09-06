@@ -75,6 +75,32 @@ class SeqTest < Test::Unit::TestCase
     assert nums.take(0) # lazy-seq, not nil
   end
 
+  should "drop" do
+    nums = [101,102,103,104,105,106,107,108,109,110].seq
+
+    assert_equal nums,        numbers(1).drop(100).take(10)
+    assert_equal [110].seq,   nums.drop(9)
+    assert_equal [1,2,3].seq, [1,2,3].seq.drop(0)
+
+    assert nums.drop(100)
+  end
+
+  should "take_last" do
+    nums = [101,102,103,104,105,106,107,108,109,110].seq
+
+    assert_equal [109,110].seq, nums.take_last(2)
+    assert_equal [110].seq,     nums.take_last(1)
+    assert_equal nil,           nums.take_last(0).seq
+  end
+
+  should "drop_last" do
+    nums = [101,102,103,104,105,106,107,108,109,110].seq
+
+    assert_equal [101,102].seq, nums.drop_last(8)
+    assert_equal [101].seq,     nums.drop_last(9)
+    assert_equal nil,           nums.drop_last(10).seq
+  end
+
   should "every?" do
     assert_equal true,  [2,4,6,8,10].seq.every?(:even?)
     assert_equal false, [2,4,6,8,11].seq.every?(:even?)
@@ -87,16 +113,6 @@ class SeqTest < Test::Unit::TestCase
     assert_equal nil,  [2,4,6,8,10].seq.some(:odd?)
     assert_equal 2,    [2,4,8].seq.some
     assert_equal nil,  [false,false,nil].seq.some
-  end
-
-  should "drop" do
-    nums = [101,102,103,104,105,106,107,108,109,110].seq
-
-    assert_equal nums,        numbers(1).drop(100).take(10)
-    assert_equal [110].seq,   nums.drop(9)
-    assert_equal [1,2,3].seq, [1,2,3].seq.drop(0)
-
-    assert nums.drop(100)
   end
 
   should "split_at" do
