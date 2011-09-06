@@ -156,6 +156,23 @@ class SeqTest < Test::Unit::TestCase
     assert_equal [11, 12, 13].seq, F.iterate(:inc, 1).drop(10).take(3)
   end
 
+  should "repeat" do
+    assert_equal [1,1,1].seq,      F.repeat(1).take(3)
+    assert_equal [:foo, :foo].seq, F.repeat(2,:foo)
+    assert_equal nil,              F.repeat(0,:foo).seq
+    assert_equal nil,              F.repeat(-1,:foo).seq
+  end
+
+  should "repeatedly" do
+    i = 0
+    f = lambda {i += 1}
+
+    assert_equal [1,2,3].seq, F.repeatedly(f).take(3)
+    assert_equal [4,5].seq,   F.repeatedly(2,f)
+    assert_equal nil,         F.repeatedly(0,f).seq
+    assert_equal nil,         F.repeatedly(-1,f).seq
+  end
+
   should "partition" do
     assert_equal [[1,2],[3,4]].seq.map(:seq),       [1,2,3,4,5].seq.partition(2)
     assert_equal [[1,2],[2,3],[3,4]].seq.map(:seq), [1,2,3,4].seq.partition(2,1)

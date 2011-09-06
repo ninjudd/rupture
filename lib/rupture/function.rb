@@ -32,10 +32,31 @@ module Rupture
 
     def iterate(*args, &f)
       f ||= args.shift
+      Utils.verify_args(args, 1)
       x = args.first
       lazy_seq do
         cons(x, iterate(f[x], &f))
       end
+    end
+
+    def repeatedly(*args, &fn)
+      fn ||= args.pop
+      Utils.verify_args(args, 0, 1)
+      n = args.first
+
+      lazy_seq do
+        if n.nil?
+          cons(fn[], repeatedly(n, fn))
+        elsif n > 0
+          cons(fn[], repeatedly(n.dec, fn))
+        end
+      end
+    end
+
+    def repeat(*args)
+      Utils.verify_args(args, 1, 2)
+      x, n = args.reverse
+      repeatedly(n) {x}
     end
 
     def lazy_seq(f = nil, &fn)

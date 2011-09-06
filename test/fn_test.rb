@@ -10,7 +10,7 @@ class FnTest < Test::Unit::TestCase
   end
 
   should "apply" do
-    assert_equal [1,2,3,4,5,6], F[:concat].apply([1],[2],[[3,4],[5,6]])
+    assert_equal [1,2,3,4,5,6].seq, F[:concat].apply([1],[2],[[3,4],[5,6]])
   end
 
   should "use hash as fn" do

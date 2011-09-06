@@ -2,6 +2,7 @@ module Rupture; end
 
 require 'rupture/core_ext'
 require 'rupture/rails_ext'
+require 'rupture/utils'
 require 'rupture/function'
 require 'rupture/fn'
 require 'rupture/lookup'
