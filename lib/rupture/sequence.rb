@@ -104,12 +104,12 @@ module Rupture
 
     def flatten
       sequential = lambda {|x| x.class <= Seq or x.class == Array}
-      tree_seq(sequential, :seq).remove(&sequential)
+      tree_seq(sequential, :seq).remove(sequential)
     end
 
     def map(f = nil, &fn)
       fn ||= f
-      F.map(self, &fn)
+      F.map(fn, self)
     end
 
     def concat(*colls)
@@ -118,12 +118,12 @@ module Rupture
 
     def mapcat(f = nil, &fn)
       fn ||= f
-      F.mapcat(self, &fn)
+      F.mapcat(fn, self)
     end
 
     def reduce(*args, &fn)
       fn ||= args.shift
-      super(*args, &fn)
+      inject(*args, &fn)
     end
 
     def tree_seq(branch, children, &f)
@@ -131,7 +131,7 @@ module Rupture
       children ||= f
       walk = lambda do |node|
         F.lazy_seq do
-          rest = children[node].mapcat(&walk) if branch[node]
+          rest = children[node].mapcat(walk) if branch[node]
           F.cons(node, rest)
         end
       end
