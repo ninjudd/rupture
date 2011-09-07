@@ -61,7 +61,7 @@ module Rupture
         if lead
           recur[s.next, lead.next]
         else
-          s
+          s || Seq.empty
         end
       end
     end
