@@ -19,7 +19,7 @@ module Rupture
     end
 
     def size
-      @array.size - index
+      @array.size - @index
     end
   end
 
@@ -37,7 +37,7 @@ module Rupture
     end
 
     def size
-      @index
+      @index.inc
     end
   end
 

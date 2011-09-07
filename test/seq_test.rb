@@ -61,6 +61,14 @@ class SeqTest < Test::Unit::TestCase
     assert_equal Rupture::Seq.empty, [].seq.reverse
   end
 
+  should "count" do
+    assert_equal 0, nil.count
+    assert_equal 4, [1,1,1,1].seq.count
+    assert_equal 4, [1,1,1,1].rseq.count
+    assert_equal 6, F.list(1,2,3,4,5,6).count
+    assert_equal 2, F.cons(1, F.cons(2, nil)).count
+  end
+
   should "map" do
     assert_equal [9,12,15].seq, F.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
     assert_equal [9,12,15].seq, [3,4,5].seq.map {|a| a * 3}

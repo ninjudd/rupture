@@ -20,6 +20,18 @@ module Rupture
       not seq
     end
 
+    def count
+      F.loop(0, self) do |recur, i, s|
+        if s.empty?
+          i
+        elsif s.respond_to?(:size)
+          s.size + i
+        else
+          recur[i.inc, s.rest]
+        end
+      end
+    end
+
     def inspect
       "#{to_a.inspect}.seq"
     end
