@@ -21,7 +21,7 @@ module Rupture
     end
 
     def inspect
-      "(#{to_a.collect(&:inspect).join(' ')})"
+      "#{to_a.inspect}.seq"
     end
 
     def conj(item)
