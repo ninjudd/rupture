@@ -76,6 +76,9 @@ class SeqTest < Test::Unit::TestCase
     assert_equal [1,1,2,3,2,1,2,3].seq,   [1,2].seq.mapcat {|a| [a,1,2,3]}
   end
 
+  should "zip" do
+    assert_equal [[1,5],[2,6],[3,nil],[4,nil]].seq, F.zip([1,2,3,4],[5,6])
+  end
   should "reduce" do
     assert_equal 10,  [1,2,3,4].seq.reduce(:+)
     assert_equal 240, [1,2,3,4].seq.reduce(:*, 10)

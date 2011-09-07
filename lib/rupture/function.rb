@@ -30,6 +30,17 @@ module Rupture
       concat(*map(*colls, &f))
     end
 
+    def zip(*colls)
+      lazy_seq do
+        seqs = colls.collect(&:seq)
+        if seqs.any?
+          firsts = seqs.collect(&:first)
+          rests  = seqs.collect(&:rest)
+          cons(firsts, zip(*rests))
+        end
+      end
+    end
+
     def loop(*vals)
       more  = true
       recur = lambda {|*vals| more = true}
