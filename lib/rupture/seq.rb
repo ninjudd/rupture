@@ -18,6 +18,10 @@ module Rupture
       nth(index)
     end
 
+    def to_ary
+      to_a
+    end
+
     def ==(other)
       s = self.seq
       o = other.seq

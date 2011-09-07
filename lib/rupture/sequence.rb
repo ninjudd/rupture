@@ -20,10 +20,6 @@ module Rupture
       not seq
     end
 
-    def to_ary
-      to_a
-    end
-
     def count
       F.loop(0, self) do |recur, i, s|
         if s.empty?
