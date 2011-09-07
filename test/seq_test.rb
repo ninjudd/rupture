@@ -69,6 +69,12 @@ class SeqTest < Test::Unit::TestCase
     assert_equal 2, F.cons(1, F.cons(2, nil)).count
   end
 
+  should "destructuring" do
+    a,b = [1,2].seq
+    assert_equal 1, a
+    assert_equal 2, b
+  end
+
   should "map" do
     assert_equal [9,12,15].seq, F.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
     assert_equal [9,12,15].seq, [3,4,5].seq.map {|a| a * 3}

@@ -20,6 +20,10 @@ module Rupture
       not seq
     end
 
+    def to_ary
+      to_a
+    end
+
     def count
       F.loop(0, self) do |recur, i, s|
         if s.empty?
@@ -33,7 +37,7 @@ module Rupture
     end
 
     def inspect
-      "#{to_a.inspect}.seq"
+      "(#{to_a.collect(&:inspect).join(' ')})"
     end
 
     def conj(item)
