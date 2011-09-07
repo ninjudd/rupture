@@ -39,7 +39,7 @@ end
 class Symbol
   include Rupture::Fn
 
-  def call(object, *args)
+  def call(object = nil, *args)
     object.method(self)[*args]
   end
   alias [] call

@@ -1,7 +1,6 @@
 module Rupture
   class Seq < Enumerable::Enumerator
     include Sequence
-    alias conj cons
 
     def initialize
       super(self)

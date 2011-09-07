@@ -45,6 +45,22 @@ class SeqTest < Test::Unit::TestCase
     end
   end
 
+  should "conj" do
+    assert_equal [1,2,3,4].seq, [2,3,4].seq.conj(1)
+    assert_equal [1].seq,       [].seq.conj(1)
+  end
+
+  should "into" do
+    assert_equal [1,2,3,4].seq, [3,4].seq.into([2,1])
+    assert_equal [1,2,3,4].seq, [].seq.into([4,3,2,1])
+  end
+
+  should "reverse and rseq" do
+    assert_equal [1,2,3,4].seq,      [4,3,2,1].seq.reverse
+    assert_equal [1,2,3,4].seq,      [4,3,2,1].rseq
+    assert_equal Rupture::Seq.empty, [].seq.reverse
+  end
+
   should "map" do
     assert_equal [9,12,15].seq, F.map([1,2,3],[3,4,5],[5,6,7]) {|a,b,c| a + b + c}
     assert_equal [9,12,15].seq, [3,4,5].seq.map {|a| a * 3}

@@ -24,8 +24,16 @@ module Rupture
       "(#{to_a.collect(&:inspect).join(' ')})"
     end
 
-    def cons(item)
+    def conj(item)
       F.cons(item, self)
+    end
+
+    def into(coll)
+      coll.seq.reduce(:conj, self)
+    end
+
+    def reverse
+      Seq.empty.into(self)
     end
 
     def take(n)
@@ -144,7 +152,15 @@ module Rupture
 
     def reduce(*args, &fn)
       fn ||= args.shift
-      inject(*args, &fn)
+      Utils.verify_args(args, 0, 1)
+
+      if s = seq
+        inject(*args, &fn)
+      elsif args.size == 1
+        args.first
+      else
+        fn[]
+      end
     end
 
     def tree_seq(branch, children, &f)
