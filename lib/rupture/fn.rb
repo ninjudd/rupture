@@ -9,6 +9,13 @@ module Rupture
     end
     alias -@ complement
 
+    def comp(fn)
+      lambda do |*args|
+        call(fn[*args])
+      end
+    end
+    alias * comp
+
     def partial(*partials)
       lambda do |*args|
         call(*(partials + args))
