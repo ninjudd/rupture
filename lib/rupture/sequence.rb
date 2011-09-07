@@ -237,5 +237,17 @@ module Rupture
         end
       end
     end
+
+    def doall(n = nil)
+      if n
+        loop(n, seq) do |recur, n, s|
+          recur[n.dec, s.next] if s and n.pos?
+        end
+      else
+        loop(seq) do |recur, s|
+          recur[s.next] if s
+        end
+      end
+    end
   end
 end
