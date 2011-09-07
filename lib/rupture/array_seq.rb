@@ -49,6 +49,10 @@ module Rupture
     def rseq
       Rupture::RArraySeq.new(self).seq
     end
+
+    def not_empty
+      self if seq
+    end
   end
 end
 

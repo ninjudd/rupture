@@ -20,6 +20,10 @@ module Rupture
       not seq
     end
 
+    def not_empty
+      self if seq
+    end
+
     def count
       F.loop(0, self) do |recur, i, s|
         if s.empty?
