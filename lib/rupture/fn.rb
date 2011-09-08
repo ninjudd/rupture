@@ -32,6 +32,10 @@ module Rupture
         self[key]
       end
     end
+
+    def arity
+      -1
+    end
   end
 end
 
@@ -50,6 +54,10 @@ class Symbol
     object.method(self)[*args]
   end
   alias [] call
+
+  def arity
+    -2
+  end
 end
 
 class Hash
