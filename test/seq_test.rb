@@ -93,9 +93,14 @@ class SeqTest < Test::Unit::TestCase
   should "zip" do
     assert_equal [[1,5],[2,6],[3,nil],[4,nil]].seq, F.zip([1,2,3,4],[5,6])
   end
+
   should "reduce" do
     assert_equal 10,  [1,2,3,4].seq.reduce(:+)
     assert_equal 240, [1,2,3,4].seq.reduce(:*, 10)
+  end
+
+  should "foldr" do
+    assert_equal F.list(1,2,3,4), [1,2,3,4].seq.foldr(F[:cons], nil)
   end
 
   should "take" do

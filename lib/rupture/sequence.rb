@@ -179,6 +179,11 @@ module Rupture
       end
     end
 
+    def foldr(*args, &fn)
+      fn ||= args.shift
+      reverse.reduce(*args) {|a,b| fn[b,a]}
+    end
+
     def tree_seq(branch, children, &f)
       branch   ||= f
       children ||= f
