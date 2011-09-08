@@ -175,7 +175,7 @@ module Rupture
       elsif args.size == 1
         args.first
       else
-        fn[]
+        fn[] if fn.arity == -1
       end
     end
 
