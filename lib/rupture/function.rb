@@ -41,6 +41,20 @@ module Rupture
       end
     end
 
+    def filter(pred, coll)
+      lazy_seq do
+        if s = coll.seq
+          e = s.first
+          tail = filter(pred, s.rest)
+          pred[e] ? cons(e, tail) : tail
+        end
+      end
+    end
+
+    def remove(pred, coll)
+      filter(pred.complement, coll)
+    end
+
     def loop(*vals)
       more  = true
       recur = lambda {|*vals| more = true}
@@ -92,6 +106,10 @@ module Rupture
 
     def list(*xs)
       List.new(*xs)
+    end
+
+    def constantly(x)
+      lambda {x}
     end
 
     def identity(x)

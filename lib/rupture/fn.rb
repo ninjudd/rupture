@@ -82,7 +82,7 @@ end
 class Module
   def [](method_name, *partials)
     lambda do |*args|
-      self.send(method_name, *(args + partials))
+      self.send(method_name, *(partials + args))
     end
   end
 end

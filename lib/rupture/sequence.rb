@@ -124,18 +124,12 @@ module Rupture
 
     def filter(p = nil, &pred)
       pred ||= p
-      F.lazy_seq do
-        if s = seq
-          i = s.first
-          tail = s.rest.filter(pred)
-          pred[i] ? F.cons(i, tail) : tail
-        end
-      end
+      F.filter(pred, self)
     end
 
     def remove(p = nil, &pred)
       pred ||= p
-      filter(pred.complement)
+      F.remove(pred, self)
     end
 
     def separate(p = nil, &pred)
