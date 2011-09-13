@@ -36,3 +36,23 @@ class Hash
     dup.stringify_keys!
   end
 end
+
+if defined?(HashWithIndifferentAccess)
+  class HashWithIndifferentAccess
+    def to_hash
+      Hash.new(default).merge(self).with_meta(meta)
+    end
+
+    def symbolize_keys
+      to_hash.symbolize_keys!
+    end
+
+    def deep_symbolize_keys
+      to_hash.deep_symbolize_keys!
+    end
+
+    def stringify_keys
+      to_hash.stringify_keys!
+    end
+  end
+end
