@@ -6,12 +6,8 @@ module Rupture
       super(self)
     end
 
-    def each
-      s = self
-      while s = s.seq
-        yield s.first
-        s = s.rest
-      end
+    def inspect
+      "(#{to_a.collect(&:inspect).join(' ')})"
     end
 
     def [](index)

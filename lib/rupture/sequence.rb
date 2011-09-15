@@ -24,6 +24,14 @@ module Rupture
       self if seq
     end
 
+    def each
+      s = self
+      while s = s.seq
+        yield s.first
+        s = s.rest
+      end
+    end
+
     def count
       F.loop(0, self) do |recur, i, s|
         if s.empty?
@@ -34,10 +42,6 @@ module Rupture
           recur[i.inc, s.rest]
         end
       end
-    end
-
-    def inspect
-      "(#{to_a.collect(&:inspect).join(' ')})"
     end
 
     def conj(item)
