@@ -66,6 +66,13 @@ module Rupture
       result
     end
 
+    def lazy_loop(*vals, &block)
+      lazy_recur = lambda do |*v|
+        lazy_seq {block[lazy_recur, *v]}
+      end
+      lazy_recur[*vals]
+    end
+
     def iterate(*args, &f)
       f ||= args.shift
       Utils.verify_args(args, 1)
