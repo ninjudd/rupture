@@ -13,6 +13,11 @@ class FnTest < Test::Unit::TestCase
   #   assert_equal [1,2,3,4,5,6].seq, F[:concat].apply([1],[2],[[3,4],[5,6]])
   # end
 
+  should "fnil replaces nil args" do
+    assert_equal [2,3,4,1,5].seq, [1,2,3,nil,4].seq.map(:inc.fnil(0))
+    assert_equal [1,2,nil,1].seq, [:a,:b,:c,nil].seq.map({:a => 1, :b => 2}.fnil(:a))
+  end
+
   should "use hash as fn" do
     assert_equal [1, 2, 3, nil].seq, [:foo, :bar, :baz, :bam].seq.map({:foo => 1, :bar => 2, :baz => 3})
   end

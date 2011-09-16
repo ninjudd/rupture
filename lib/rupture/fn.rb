@@ -27,9 +27,15 @@ module Rupture
     #   call(*F.concat(args, last))
     # end
 
+    def fnil(*defaults)
+      lambda do |*args|
+        call(*F.map(args, defaults) {|a,d| a.nil? ? d : a})
+      end
+    end
+
     def to_proc
       lambda do |key|
-        self[key]
+        call(key)
       end
     end
 

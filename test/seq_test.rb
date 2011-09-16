@@ -261,4 +261,8 @@ class SeqTest < Test::Unit::TestCase
   should "partition_between" do
     assert_equal [[1], [nil, 4, 3], [nil, 8]].seq.map(:seq), [1,nil,4,3,nil,8].seq.partition_between {|a,b| b == nil}
   end
+
+  should "calculate frequencies" do
+    assert_equal({1=>3, nil=>2, 2=>1}, [1,nil,2,1,nil,1].seq.frequencies)
+  end
 end

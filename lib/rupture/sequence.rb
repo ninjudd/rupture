@@ -281,6 +281,12 @@ module Rupture
       end
     end
 
+    def frequencies
+      reduce({}) do |counts, x|
+        counts.update!(:inc.fnil(0), x)
+      end
+    end
+
     def doall(n = nil)
       if n
         loop(n, seq) do |recur, n, s|
