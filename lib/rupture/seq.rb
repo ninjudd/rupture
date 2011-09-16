@@ -1,5 +1,5 @@
 module Rupture
-  class Seq < Enumerable::Enumerator
+  class Seq < Enumerator
     include Sequence
 
     def initialize

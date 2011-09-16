@@ -133,6 +133,29 @@ module Rupture
       juxt(identity, *args)
     end
 
+    def let(*vals)
+      yield(*vals)
+    end
+
+    def when_let(val)
+      yield(val) if val
+    end
+
+    def for(s, *seqs, &fn)
+      if seqs.empty?
+        s.seq.map(&fn)
+      else
+        lazy_seq do
+          tails = self.for(*seqs) {|*args| args}
+          s.seq.mapcat do |head|
+            tails.map do |tail|
+              fn[head, *tail]
+            end
+          end
+        end
+      end
+    end
+
     extend Function
     F = Function
   end

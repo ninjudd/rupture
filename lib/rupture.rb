@@ -1,5 +1,7 @@
 module Rupture; end
 
+Enumerator = Enumerable::Enumerator unless RUBY_VERSION =~ /1.9/
+
 require 'rupture/core_ext'
 require 'rupture/rails_ext'
 require 'rupture/utils'
