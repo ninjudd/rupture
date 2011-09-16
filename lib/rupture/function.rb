@@ -67,10 +67,10 @@ module Rupture
     end
 
     def lazy_loop(*vals, &block)
-      lazy_recur = lambda do |*v|
-        lazy_seq {block[lazy_recur, *v]}
+      recur = lambda do |*v|
+        lazy_seq {block[recur, *v]}
       end
-      lazy_recur[*vals]
+      recur[*vals]
     end
 
     def iterate(*args, &f)

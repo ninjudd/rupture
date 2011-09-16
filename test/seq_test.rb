@@ -80,6 +80,10 @@ class SeqTest < Test::Unit::TestCase
     assert_equal [9,12,15].seq, [3,4,5].seq.map {|a| a * 3}
   end
 
+  should "map_indexed" do
+    assert_equal [2,4,6,8].seq, [2,3,4,5].seq.map_indexed {|i, a| i + a}
+  end
+
   should "concat" do
     assert_equal [1,2,3,4,5,6].seq, F.concat([1,2],[3,4,5],[6])
     assert_equal [1,2,3,4,5,6].seq, [1,2].seq.concat([3,4,5],[6])

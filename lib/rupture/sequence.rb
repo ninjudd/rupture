@@ -155,6 +155,13 @@ module Rupture
       F.map(fn, self)
     end
 
+    def map_indexed(f = nil, &fn)
+      fn ||= f
+      F.lazy_loop(0, seq) do |recur, i, s|
+        F.cons(fn[i, s.first], recur[i.inc, s.next]) if s
+      end
+    end
+
     def concat(*colls)
       F.concat(self, *colls)
     end
