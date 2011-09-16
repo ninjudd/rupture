@@ -103,6 +103,11 @@ class SeqTest < Test::Unit::TestCase
     assert_equal 240, [1,2,3,4].seq.reduce(:*, 10)
   end
 
+  should "reducutions" do
+    assert_equal [1,3,6,10].seq,        [1,2,3,4].seq.reductions(:+)
+    assert_equal [10,10,20,60,240].seq, [1,2,3,4].seq.reductions(:*, 10)
+  end
+
   should "foldr" do
     assert_equal F.list(1,2,3,4), [1,2,3,4].seq.foldr(F[:cons], nil)
   end

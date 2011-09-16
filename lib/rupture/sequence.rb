@@ -24,6 +24,10 @@ module Rupture
       self if seq
     end
 
+    def divide
+      [first, rest]
+    end
+
     def each
       s = self
       while s = s.seq
@@ -182,6 +186,19 @@ module Rupture
       else
         fn[] if fn.arity == -1
       end
+    end
+
+    def reductions(*args, &fn)
+      fn ||= args.shift
+      Utils.verify_args(args, 0, 1)
+      acc, coll = (args.empty? ? divide : [args.first, self])
+
+      F.lazy_loop(acc, coll) do |recur, acc, coll|
+        if coll.seq
+          acc = fn[acc, coll.first]
+          F.cons(acc, recur[acc, coll.rest])
+        end
+      end.conj(acc)
     end
 
     def foldr(*args, &fn)

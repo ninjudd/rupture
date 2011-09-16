@@ -19,6 +19,8 @@ module Rupture
     end
 
     def ==(other)
+      return false unless other.respond_to?(:seq)
+
       s = self.seq
       o = other.seq
       while s && o
@@ -26,6 +28,7 @@ module Rupture
         s = s.next
         o = o.next
       end
+
       s.nil? and o.nil?
     end
 
