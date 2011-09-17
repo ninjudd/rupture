@@ -7,12 +7,12 @@ class Hash
   end
 
   def update!(*args, &block)
-    if args.size == 1
-      key = args.shift
+    key = args.shift
+
+    if args.size == 0
       self[key] = yield(self[key])
     else
-      fn  = args.shift
-      key = args.shift
+      fn = args.shift
       self[key] = fn.call(self[key], *args, &block)
     end
     self

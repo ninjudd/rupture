@@ -291,7 +291,7 @@ module Rupture
 
     def frequencies
       reduce({}) do |counts, x|
-        counts.update!(:inc.fnil(0), x)
+        counts.update!(x, :inc.fnil(0))
       end
     end
 

@@ -16,11 +16,11 @@ class MapTest < Test::Unit::TestCase
 
   should "update!" do
     h = {:foo => 1, :bar => [1,2,3].seq}
-    h.update!(:inc, :foo)
+    h.update!(:foo, :inc)
 
     assert_equal({:foo => 2, :bar => [1,2,3].seq}, h)
 
-    h.update!(:map, :bar) {|i| i + 10}
+    h.update!(:bar, :map) {|i| i + 10}
     assert_equal({:foo => 2, :bar => [11,12,13].seq}, h)
 
     h.update!(:foo) {|i| i + 10}
