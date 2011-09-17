@@ -281,6 +281,14 @@ module Rupture
       end
     end
 
+    def sort(f = nil, &fn)
+      super(&f).seq
+    end
+
+    def sort_by(f = nil, &fn)
+      sort {|a,b| f[a] <=> f[b]}
+    end
+
     def frequencies
       reduce({}) do |counts, x|
         counts.update!(:inc.fnil(0), x)

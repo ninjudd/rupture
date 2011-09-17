@@ -16,6 +16,7 @@ require 'rupture/lazy_seq'
 require 'rupture/cons'
 require 'rupture/array_seq'
 require 'rupture/list'
+require 'rupture/map'
 
 F = Rupture::Function
 

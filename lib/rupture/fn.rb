@@ -17,8 +17,28 @@ module Rupture
     alias * comp
 
     def partial(*partials)
+      lambda do |*args, &block|
+        call(*(partials + args), &block)
+      end
+    end
+
+    def rpartial(*partials)
+      lambda do |*args, &block|
+        call(*(args + partials), &block)
+      end
+    end
+
+    def <<(partials)
+      partial(*partials)
+    end
+
+    def >>(partials)
+      rpartial(*partials)
+    end
+
+    def block(&block)
       lambda do |*args|
-        call(*(partials + args))
+        call(*args, &block)
       end
     end
 
@@ -56,8 +76,8 @@ end
 class Symbol
   include Rupture::Fn
 
-  def call(object = nil, *args)
-    object.method(self)[*args]
+  def call(object, *args, &block)
+    object.method(self).call(*args, &block)
   end
   alias [] call
 
