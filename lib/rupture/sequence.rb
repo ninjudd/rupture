@@ -277,18 +277,21 @@ module Rupture
       fn ||= f
       F.lazy_seq do
         if s = seq
-          run = F.cons(s.first, s.partition(2,1).take_while {|i| not fn[*i]}.map(:second))
+          run = F.cons(s.first,
+                       s.partition(2,1).take_while {|i| not fn[*i]}.map(:second))
           F.cons(run, s.drop(run.count).partition_between(fn))
         end
       end
     end
 
-    def sort(f = nil, &fn)
-      super(&f).seq
+    def sort(c = nil, &cmp)
+      cmp||= c
+      super(&cmp).seq
     end
 
     def sort_by(f = nil, &fn)
-      sort {|a,b| f[a] <=> f[b]}
+      fn ||= f
+      sort {|a,b| fn[a] <=> fn[b]}
     end
 
     def frequencies
