@@ -8,13 +8,14 @@ class Hash
 
   def update!(*args, &block)
     key = args.shift
+    val = self[key]
 
-    if args.size == 0
-      self[key] = yield(self[key])
+    self[key] = if args.size == 0
+      yield(val)
     else
-      fn = args.shift
-      self[key] = fn.call(self[key], *args, &block)
+      args.shift.call(val, *args, &block)
     end
+
     self
   end
 
