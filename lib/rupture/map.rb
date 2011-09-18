@@ -6,16 +6,19 @@ class Hash
     self
   end
 
-  def update!(*args, &block)
-    key = args.shift
-    val = self[key]
-
-    self[key] = if args.size == 0
-      yield(val)
+  def update!(key, fn = nil, *args, &block)
+    self[key] = if fn
+      fn.call(self[key], *args, &block)
     else
-      args.shift.call(val, *args, &block)
+      yield(self[key])
     end
+    self
+  end
 
+  def update_each!(keys, *args, &block)
+    keys.each do |key|
+      update!(key, *args, &block)
+    end
     self
   end
 
