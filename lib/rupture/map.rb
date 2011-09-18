@@ -1,4 +1,8 @@
 class Hash
+  def map?
+    true
+  end
+
   def assoc!(*vals)
     vals.each_slice(2) do |k,v|
       self[k] = v

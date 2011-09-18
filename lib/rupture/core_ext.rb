@@ -19,3 +19,9 @@ class Numeric
     self == 0
   end
 end
+
+class Object
+  def map?
+    false
+  end
+end
