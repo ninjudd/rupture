@@ -295,8 +295,8 @@ module Rupture
     end
 
     def frequencies
-      reduce({}) do |counts, x|
-        counts.update!(x, :inc.fnil(0))
+      reduce(Hash.new(0)) do |counts, x|
+        counts.update!(x, :inc)
       end
     end
 
