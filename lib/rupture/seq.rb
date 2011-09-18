@@ -7,7 +7,7 @@ module Rupture
     end
 
     def inspect
-      "(#{to_a.collect(&:inspect).join(' ')})"
+      "(#{to_a.collect(&:inspect).join(',')})"
     end
 
     def [](index)
