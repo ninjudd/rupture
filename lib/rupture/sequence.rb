@@ -156,7 +156,9 @@ module Rupture
 
     def map(f = nil, &fn)
       fn ||= f
-      F.map(fn, self)
+      F.lazy_loop(seq) do |recur, s|
+        F.cons(fn[s.first], s.rest.map(&fn)) if s
+      end
     end
 
     def map_indexed(f = nil, &fn)
