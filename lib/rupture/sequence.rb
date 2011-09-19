@@ -157,7 +157,7 @@ module Rupture
     def map(f = nil, &fn)
       fn ||= f
       F.lazy_loop(seq) do |recur, s|
-        F.cons(fn[s.first], s.rest.map(&fn)) if s
+        F.cons(fn[s.first], recur[s.next]) if s
       end
     end
 

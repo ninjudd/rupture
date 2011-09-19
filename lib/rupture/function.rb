@@ -1,13 +1,12 @@
 module Rupture
   module Function
-    def map(*colls, &f)
-      f ||= colls.shift
-      lazy_seq do
-        seqs = colls.seq.map(:seq)
+    def map(*colls, &fn)
+      fn ||= colls.shift
+      lazy_loop(colls.seq.map(:seq)) do |recur, seqs|
         if seqs.every?
           firsts = seqs.map(:first)
-          rests  = seqs.map(&:rest)
-          cons(f[*firsts], map(*rests, &f))
+          nexts  = seqs.map(:next)
+          cons(fn[*firsts], recur[nexts])
         end
       end
     end
@@ -23,9 +22,9 @@ module Rupture
       end
     end
 
-    def mapcat(*colls, &f)
-      f ||= colls.shift
-      concat(*map(*colls, &f))
+    def mapcat(*colls, &fn)
+      fn ||= colls.shift
+      concat(*map(*colls, &fn))
     end
 
     def zip(*colls)
@@ -71,12 +70,12 @@ module Rupture
       recur[*vals]
     end
 
-    def iterate(*args, &f)
-      f ||= args.shift
+    def iterate(*args, &fn)
+      fn ||= args.shift
       Utils.verify_args(args, 1)
       x = args.first
       lazy_seq do
-        cons(x, iterate(f[x], &f))
+        cons(x, iterate(fn[x], &fn))
       end
     end
 
