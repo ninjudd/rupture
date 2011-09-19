@@ -1,7 +1,5 @@
 module Rupture
   module Sequence
-    include Enumerable
-
     def first
       seq.first
     end
