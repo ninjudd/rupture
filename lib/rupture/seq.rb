@@ -1,10 +1,7 @@
 module Rupture
-  class Seq < Enumerator
+  class Seq
+    include Enumerable
     include Sequence
-
-    def initialize
-      super(self)
-    end
 
     def inspect
       "(#{to_a.collect(&:inspect).join(',')})"

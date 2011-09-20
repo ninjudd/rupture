@@ -3,7 +3,6 @@ module Rupture
     def initialize(array, index = 0)
       @array = array
       @index = index
-      super()
     end
 
     def first

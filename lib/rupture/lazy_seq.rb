@@ -1,8 +1,7 @@
 module Rupture
   class LazySeq < Seq
-    def initialize(b = nil, &block)
-      @block = block || b
-      super()
+    def initialize(block = nil)
+      @block = block
     end
 
     def seq

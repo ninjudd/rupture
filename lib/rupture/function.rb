@@ -101,7 +101,7 @@ module Rupture
 
     def lazy_seq(f = nil, &fn)
       fn ||= f
-      LazySeq.new(&fn)
+      LazySeq.new(fn)
     end
 
     def cons(head, tail)
