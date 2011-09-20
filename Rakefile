@@ -11,6 +11,7 @@ begin
     s.homepage = "http://github.com/flatland/rupture"
     s.description = "Clojure sequence functions for Ruby."
     s.authors = ["Justin Balthrop"]
+    s.add_dependency('hamster', '>= 0.4.2')
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -26,4 +26,12 @@ class MapTest < Test::Unit::TestCase
     h.update!(:foo) {|i| i + 10}
     assert_equal({:foo => 12, :bar => [11,12,13].seq}, h)
   end
+
+  should "update" do
+    h = ~{:foo => 1, :bar => [1,2,3].seq}
+
+    assert_equal ~{:foo => 2,  :bar => [1,2,3].seq},    h.update(:foo, :inc)
+    assert_equal ~{:foo => 1,  :bar => [11,12,13].seq}, h.update(:bar, :map) {|i| i + 10}
+    assert_equal ~{:foo => 11, :bar => [1,2,3].seq},    h.update(:foo) {|i| i + 10}
+  end
 end

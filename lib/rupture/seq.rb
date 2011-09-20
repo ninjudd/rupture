@@ -18,7 +18,7 @@ module Rupture
       to_a
     end
 
-    def ==(other)
+    def eql?(other)
       return false unless other.respond_to?(:seq)
 
       s = self.seq
@@ -31,6 +31,7 @@ module Rupture
 
       s.nil? and o.nil?
     end
+    alias == eql?
 
     def self.empty
       @empty ||= EmptySeq.new

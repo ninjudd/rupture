@@ -17,6 +17,7 @@ require 'rupture/cons'
 require 'rupture/array_seq'
 require 'rupture/list'
 require 'rupture/map'
+require 'rupture/hash_map'
 
 F = Rupture::Function
 

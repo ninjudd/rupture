@@ -112,6 +112,15 @@ module Rupture
       List.new(*xs)
     end
 
+    def hash_map(*kvs, &block)
+      h = block_given? ? HashMap.new(&block) : HashMap.empty
+      if kvs.size == 1
+        h.into(kvs.first)
+      else
+        h.assoc(*kvs)
+      end
+    end
+
     def constantly(x)
       lambda {x}
     end
