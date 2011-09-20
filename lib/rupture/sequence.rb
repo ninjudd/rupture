@@ -57,7 +57,7 @@ module Rupture
     end
 
     def reverse
-      Seq.empty.into(self)
+      Seq::Empty.into(self)
     end
 
     def take(n)
@@ -85,7 +85,7 @@ module Rupture
         if lead
           recur[s.next, lead.next]
         else
-          s || Seq.empty
+          s || Seq::Empty
         end
       end
     end

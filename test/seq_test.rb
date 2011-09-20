@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class SeqTest < Test::Unit::TestCase
-  empty_seqs = [nil, [], Rupture::Seq.empty, F.lazy_seq{nil}, F.lazy_seq{[]}]
+  empty_seqs = [nil, [], Rupture::Seq::Empty, F.lazy_seq{nil}, F.lazy_seq{[]}]
 
   def numbers(i)
     F.lazy_seq { F.cons(i, numbers(i.inc))}
@@ -56,9 +56,9 @@ class SeqTest < Test::Unit::TestCase
   end
 
   should "reverse and rseq" do
-    assert_equal [1,2,3,4].seq,      [4,3,2,1].seq.reverse
-    assert_equal [1,2,3,4].seq,      [4,3,2,1].rseq
-    assert_equal Rupture::Seq.empty, [].seq.reverse
+    assert_equal [1,2,3,4].seq,       [4,3,2,1].seq.reverse
+    assert_equal [1,2,3,4].seq,       [4,3,2,1].rseq
+    assert_equal Rupture::Seq::Empty, [].seq.reverse
   end
 
   should "count" do

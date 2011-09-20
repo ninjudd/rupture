@@ -12,7 +12,7 @@ module Rupture
     end
 
     def rest
-      @rest ||= Seq.empty
+      @rest ||= Seq::Empty
     end
   end
 end

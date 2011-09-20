@@ -6,17 +6,13 @@ module Rupture
     private_class_method :create
     attr_reader :seq, :size
 
-    def self.empty
-      @empty ||= create(nil, 0)
-    end
-
     def initialize(seq, size)
       @seq = seq.seq
       @size = size
     end
 
     def self.new(*args)
-      list = self.empty
+      list = Empty
       args.reverse_each do |x|
         list = list.conj(x)
       end
@@ -27,5 +23,7 @@ module Rupture
     def conj(x)
       self.class.send(:create, Cons.new(x, @seq), @size.inc)
     end
+
+    Empty = create(nil, 0)
   end
 end

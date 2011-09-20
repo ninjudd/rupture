@@ -30,15 +30,13 @@ module Rupture
     end
     alias == eql?
 
-    def self.empty
-      @empty ||= EmptySeq.new
+    class EmptySeq < Seq
+      def seq
+        nil
+      end
     end
-  end
 
-  class EmptySeq < Seq
-    def seq
-      nil
-    end
+    Empty = EmptySeq.new
   end
 end
 
@@ -54,6 +52,6 @@ class NilClass
   end
 
   def rest
-    Rupture::Seq.empty
+    Rupture::Seq::Empty
   end
 end
