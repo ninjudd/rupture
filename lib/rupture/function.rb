@@ -136,7 +136,7 @@ module Rupture
     end
 
     def decorate(*args)
-      juxt(identity, *args)
+      juxt(F[:identity], *args)
     end
 
     def let(*vals)
