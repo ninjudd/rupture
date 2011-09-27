@@ -14,6 +14,12 @@ module Rupture
       end
     end
 
+    def dissoc(*keys)
+      keys.reduce(as_map) do |map, key|
+        map.delete(key)
+      end
+    end
+
     def update(key, fn = nil, *args, &block)
       if fn
         assoc(key, fn.call(self[key], *args, &block))
