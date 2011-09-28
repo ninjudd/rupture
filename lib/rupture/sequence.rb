@@ -300,6 +300,21 @@ module Rupture
       end
     end
 
+    def distinct
+      seen = [].to_set
+      F.lazy_loop(self) do |recur, s|
+        if s = s.seq
+          e = s.first
+          if seen[e]
+            recur[s.rest]
+          else
+            seen << e
+            F.cons(e, recur[s.rest])
+          end
+        end
+      end
+    end
+
     def doall(n = nil)
       if n
         loop(n, seq) do |recur, n, s|

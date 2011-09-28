@@ -270,4 +270,8 @@ class SeqTest < Test::Unit::TestCase
   should "calculate frequencies" do
     assert_equal({1=>3, nil=>2, 2=>1}, [1,nil,2,1,nil,1].seq.frequencies)
   end
+
+  should "make distinct" do
+    assert_equal([1,2,3].seq, [1,2,1,1,2,3,2,3].seq.distinct)
+  end
 end
