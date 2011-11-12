@@ -14,4 +14,7 @@ in Ruby.
 ## Coming soon
 
 * improved README
-* hamster-based persistent data structures
+* Hash Array Mapped Tries
+* Bitmapped Array Tries
+* Native Implementations
+* Chunked seqs
