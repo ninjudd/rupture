@@ -143,6 +143,12 @@ module Rupture
       yield(*vals)
     end
 
+    def fix(val, pred, f = nil, &fn)
+      fn ||= f
+      pred = pred.to_proc[val] if pred.respond_to?(:to_proc)
+      pred ? fn[val] : val
+    end
+
     def when_let(val)
       yield(val) if val
     end

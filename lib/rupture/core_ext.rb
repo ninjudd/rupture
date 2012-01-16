@@ -24,4 +24,8 @@ class Object
   def map?
     false
   end
+
+  def fix(pred, f = nil, &fn)
+    Rupture::Function.fix(self, pred, fn || f)
+  end
 end

@@ -46,4 +46,15 @@ class FunctionTest < Test::Unit::TestCase
     assert_equal nil, F.when_let(nil)   {|a| a + 1}
     assert_equal 2,   F.when_let(1)     {|a| a + 1}
   end
+
+  should "fix stuff" do
+    assert_equal 1, F.fix(1,:even?,:inc)
+    assert_equal 1, 1.fix(:even?,:inc)
+
+    assert_equal 3, F.fix(2,:even?,:inc)
+    assert_equal 3, 2.fix(:even?,:inc)
+
+    assert_equal 12, F.fix(2,:even?) {|i| i + 10}
+    assert_equal 12, 2.fix(:even?) {|i| i + 10}
+  end
 end
