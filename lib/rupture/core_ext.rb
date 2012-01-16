@@ -25,6 +25,10 @@ class Object
     false
   end
 
+  def let(*vals)
+    yield(self, *vals)
+  end
+
   def fix(pred, f = nil, &fn)
     Rupture::Function.fix(self, pred, fn || f)
   end
