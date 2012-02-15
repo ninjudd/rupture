@@ -5,7 +5,7 @@ module Rupture::Meta
 
   def clone(meta = nil)
     meta ||= @_meta.clone if @_meta
-    raise "meta must be of type Hash, it is #{meta.class}" unless meta.nil? or meta.kind_of?(Hash)
+    raise "meta must be of type Hash, it is #{meta.class}" unless meta.nil? or meta.kind_of?(Hash) or meta.kind_of?(Rupture::HashMap)
     copy = super()
     copy.instance_variable_set(:@_meta, meta)
     copy
