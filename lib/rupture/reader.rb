@@ -33,22 +33,22 @@ module Rupture
 
     def read
       case c = getc
-      when '('  : read_list
-      when '['  : read_list(Array, ']')
-      when '{'  : read_map
-      when '"'  : read_string
-      when ':'  : read_keyword
-      when ' '  : read
-      when /\d/ : ungetc(c); read_number
-      when /\w/ : ungetc(c); read_symbol
+      when '('  then read_list
+      when '['  then read_list(Array, ']')
+      when '{'  then read_map
+      when '"'  then read_string
+      when ':'  then read_keyword
+      when ' '  then read
+      when /\d/ then ungetc(c); read_number
+      when /\w/ then ungetc(c); read_symbol
       when '-'
         case c = getc
-        when /\d/ : ungetc(c);     -read_number
-        else        ungetc('-', c); read_symbol
+        when /\d/ then ungetc(c);     -read_number
+        else           ungetc('-', c); read_symbol
         end
       when '#'
         case c = getc
-        when '{' : read_list(Set, '}')
+        when '{' then read_list(Set, '}')
         end
       end
     end
