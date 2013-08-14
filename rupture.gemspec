@@ -10,9 +10,10 @@ Gem::Specification.new do |gem|
   gem.summary       = gem.description
   gem.homepage      = "https://github.com/flatland/rupture"
 
-  gem.add_development_dependency 'shoulda'
+  gem.add_development_dependency 'shoulda', '3.0.1'
   gem.add_development_dependency 'mocha'
   gem.add_development_dependency 'hamster'
+  gem.add_development_dependency 'rake'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
