@@ -1,11 +1,10 @@
-# -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'rupture/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "test"
-  gem.version       = Rupture::VERSION
+  gem.version       = IO.read('VERSION')
   gem.authors       = ["Justin Balthrop", "Alan Malloy"]
   gem.email         = ["git@justinbalthrop.com"]
   gem.description   = %q{Clojure sequence functions for Ruby.}
