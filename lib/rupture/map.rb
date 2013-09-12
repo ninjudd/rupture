@@ -4,8 +4,12 @@ module Rupture
       true
     end
 
-    def assoc(*kvs)
+    def associate(*kvs)
       into(kvs.seq.partition(2))
+    end
+
+    def assoc(*kvs)
+      associate(*kvs)
     end
 
     def into(other)
