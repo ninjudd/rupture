@@ -1,3 +1,5 @@
+require 'continuation'
+
 module Rupture
   class LazySeq < Seq
     def initialize(block = nil)
