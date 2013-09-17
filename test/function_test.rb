@@ -45,6 +45,15 @@ class FunctionTest < Test::Unit::TestCase
     assert_equal 3, c
 
     assert_equal a, 0 if RUBY_VERSION =~ /1.9/ # 1.8 only has lexical scope for functions.
+
+    if RUBY_VERSION =~ /1.9/
+      c = F.let do |a = 1, b = 2|
+        assert_equal 1, a
+        assert_equal 2, b
+        a + b
+      end
+      assert_equal 3, c
+    end
   end
 
   should "when_let" do
