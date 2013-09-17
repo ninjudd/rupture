@@ -54,7 +54,10 @@ module Rupture
 
     def loop(*vals)
       more  = true
-      recur = lambda {|*vals| more = true}
+      recur = lambda do |*new_vals|
+        vals = new_vals
+        more = true
+      end
 
       while more
         more = nil
